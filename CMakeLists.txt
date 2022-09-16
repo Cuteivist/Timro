@@ -6,15 +6,31 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
+find_package(Qt6 COMPONENTS ShaderTools)
 
 qt_add_executable(appTimro
-    main.cpp
+    src/main.cpp
 )
 
 qt_add_qml_module(appTimro
     URI Timro
     VERSION 1.0
-    QML_FILES main.qml 
+    QML_FILES
+        qml/main.qml
+        qml/panels/TimeControlPanel.qml
+        qml/components/time/TimeBar.qml
+        qml/components/buttons/ControlButton.qml        
+    RESOURCES
+        resources/button/play.png
+        resources/button/pause.png
+        resources/button/stop.png
+)
+
+qt6_add_shaders(appTimro "basic_shaders"
+    PREFIX /
+    FILES
+        resources/shaders/linearGradient.frag
+        resources/shaders/buttonRotate.frag
 )
 
 set_target_properties(appTimro PROPERTIES
