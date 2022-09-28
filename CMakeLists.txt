@@ -19,7 +19,11 @@ qt_add_qml_module(appTimro
         qml/main.qml
         qml/panels/TimeControlPanel.qml
         qml/components/time/TimeBar.qml
-        qml/components/buttons/ControlButton.qml        
+        qml/components/time/TimeDisplay.qml
+        qml/components/time/TimeEditDisplay.qml
+        qml/components/time/TimeProgressCircle.qml
+        qml/components/time/TimeNumberSpinner.qml
+        qml/components/buttons/ControlButton.qml
     RESOURCES
         resources/button/play.png
         resources/button/pause.png
@@ -31,6 +35,7 @@ qt6_add_shaders(appTimro "basic_shaders"
     FILES
         resources/shaders/linearGradient.frag
         resources/shaders/buttonRotate.frag
+        resources/shaders/timeListOpacity.frag
 )
 
 set_target_properties(appTimro PROPERTIES

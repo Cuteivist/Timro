@@ -1,19 +1,21 @@
 import QtQuick
+import QtQuick.Layouts
 
 import "../components/buttons"
 import "../components/time"
 
 Item {
-    Column {
-        spacing: 10
+    ColumnLayout {
         anchors.fill: parent
         Row {
             id: controlPanel
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignHCenter
+            Layout.minimumHeight: playPauseButton.height * 0.85
+            Layout.maximumHeight: playPauseButton.height * 0.85
             ControlButton {
                 id: playPauseButton
 
-                property bool running: false
+                property bool running: false // TODO move to cpp
 
                 source: playPauseButton.running ? "qrc:/Timro/resources/button/pause.png" : "qrc:/Timro/resources/button/play.png"
                 onClicked: {
@@ -37,9 +39,8 @@ Item {
         }
 
         TimeBar {
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: 200
-            height: 100
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
     }
 }

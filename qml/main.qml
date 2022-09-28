@@ -8,7 +8,7 @@ ApplicationWindow {
     minimumWidth: 360
     minimumHeight: 480
     visible: true
-    title: qsTr("Timro")
+    title: "Timro"
 
     Rectangle {
         anchors.fill: parent
@@ -17,7 +17,14 @@ ApplicationWindow {
 
     TimeControlPanel {
         anchors {
-            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            leftMargin: 20
+            rightMargin: 20
+            topMargin: 5
         }
+        height: 200
+        // TODO should be draggable
     }
 }
