@@ -34,6 +34,8 @@ Item {
         anchors.fill: parent
         currentValue: priv.currentValue
         maxValue: priv.maxValue
+        editMode: timeEditDisplay.visible
+        editValue: timeEditDisplay.editValue
     }
 
     TimeDisplay {
@@ -46,6 +48,7 @@ Item {
     }
 
     TimeEditDisplay {
+        id: timeEditDisplay
         anchors.fill: timeDisplay
         value: priv.currentValue
         visible: priv.timeEditMode

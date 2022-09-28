@@ -23,6 +23,7 @@ qt_add_qml_module(appTimro
         qml/components/time/TimeEditDisplay.qml
         qml/components/time/TimeProgressCircle.qml
         qml/components/time/TimeNumberSpinner.qml
+        qml/components/time/TimeProgressArc.qml
         qml/components/buttons/ControlButton.qml
     RESOURCES
         resources/button/play.png
@@ -36,6 +37,7 @@ qt6_add_shaders(appTimro "basic_shaders"
         resources/shaders/linearGradient.frag
         resources/shaders/buttonRotate.frag
         resources/shaders/timeListOpacity.frag
+        resources/shaders/timeEditArcGlow.frag
 )
 
 set_target_properties(appTimro PROPERTIES

@@ -3,6 +3,8 @@ import QtQuick
 Item {
     id: timeDisplay
 
+    readonly property int editValue: ((hourListView.currentIndex * 60) + minutesListView.currentIndex) * 60
+
     property int value: 0
 
     onVisibleChanged: {
@@ -11,11 +13,10 @@ Item {
         }
         const fullMinutes = Math.floor(value / 60)
         const mins = (fullMinutes) % 60
-        minutesListView.positionViewAtIndex(mins, ListView.Center);
+        minutesListView.positionViewAtIndex(mins, ListView.Center)
         const hours = Math.floor(fullMinutes / 60)
-        hourListView.positionViewAtIndex(hours, ListView.Center);
+        hourListView.positionViewAtIndex(hours, ListView.Center)
     }
-
 
     Row {
         anchors.centerIn: parent
@@ -30,6 +31,11 @@ Item {
             width: parent.width * 0.45
             startValue: 0
             endValue: 99
+
+            Component.onCompleted: { // debug
+                hourListView.positionViewAtIndex(7, ListView.Center)
+                minutesListView.positionViewAtIndex(30, ListView.Center)
+            }
         }
 
         Text {
