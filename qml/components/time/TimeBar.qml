@@ -16,7 +16,7 @@ Item {
         property: "currentValue"
         from: 2000
         to: priv.maxValue
-        duration: priv.maxValue * 1000 //60 * 1000
+        duration: priv.maxValue * 1000
         loops: 1
         running: true
     }
@@ -26,7 +26,7 @@ Item {
 
         property int currentValue: 0 // TODO move to cpp
         readonly property int maxValue: 8 * 60 * 60 // TODO move to cpp
-        property bool timeEditMode: true
+        property bool timeEditMode: false
     }
 
     TimeProgressCircle {

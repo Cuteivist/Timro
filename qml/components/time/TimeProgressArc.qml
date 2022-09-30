@@ -7,6 +7,8 @@ Shape {
     property int radius: 0
     property real progress: 0
 
+    property alias color: shape.strokeColor
+
     QtObject {
         id: priv
         readonly property point center: Qt.point(arcShape.width * 0.5, arcShape.height * 0.5)
@@ -46,6 +48,7 @@ Shape {
     layer.samples: 4
 
     ShapePath {
+        id: shape
         fillColor: "transparent"
         strokeColor: "red"
         strokeWidth: 4

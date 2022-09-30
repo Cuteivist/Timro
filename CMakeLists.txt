@@ -25,6 +25,7 @@ qt_add_qml_module(appTimro
         qml/components/time/TimeNumberSpinner.qml
         qml/components/time/TimeProgressArc.qml
         qml/components/buttons/ControlButton.qml
+        qml/components/effects/RotatingShadowEffect.qml
     RESOURCES
         resources/button/play.png
         resources/button/pause.png
@@ -37,7 +38,7 @@ qt6_add_shaders(appTimro "basic_shaders"
         resources/shaders/linearGradient.frag
         resources/shaders/buttonRotate.frag
         resources/shaders/timeListOpacity.frag
-        resources/shaders/timeEditArcGlow.frag
+        resources/shaders/rotatingShadow.frag
 )
 
 set_target_properties(appTimro PROPERTIES

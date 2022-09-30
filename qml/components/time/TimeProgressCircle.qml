@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Shapes
 
+import "../effects"
+
 Item {
     id: progressCircle
     property int currentValue: 0
@@ -58,9 +60,12 @@ Item {
         id: editTimeArc
         anchors.fill: parent
         radius: timeInnerArc.radiusX * 1.07
+        visible: editMode
         progress: editValue / maxValue
-        layer.effect: ShaderEffect {
-            fragmentShader: "qrc:/resources/shaders/timeEditArcGlow.frag.qsb"
+        color: "#FA0942"
+        layer.effect: RotatingShadowEffect {
+            shadowCount: 10
+            shadowColor: "#FF9DA3"
         }
     }
 }
