@@ -4,43 +4,32 @@ import QtQuick.Layouts
 import "../components/buttons"
 import "../components/time"
 
-Item {
-    ColumnLayout {
-        anchors.fill: parent
-        Row {
-            id: controlPanel
-            Layout.alignment: Qt.AlignHCenter
-            Layout.minimumHeight: playPauseButton.height * 0.85
-            Layout.maximumHeight: playPauseButton.height * 0.85
-            ControlButton {
-                id: playPauseButton
+Row {
+    id: controlPanel
+    height: playPauseButton.height * 0.85
+    RotatingButton {
+        id: playPauseButton
 
-                property bool running: false // TODO move to cpp
+        property bool running: false // TODO move to cpp
 
-                source: playPauseButton.running ? "qrc:/Timro/resources/button/pause.png" : "qrc:/Timro/resources/button/play.png"
-                onClicked: {
-                    // TODO add
-                    running = !running
-                }
-            }
-
-            Item {
-                width: stopButton.width
-                height: stopButton.height
-                ControlButton {
-                    id: stopButton
-                    source: "qrc:/Timro/resources/button/stop.png"
-                    visible: playPauseButton.running
-                    onClicked: {
-                        // TODO add reset functionality
-                    }
-                }
-            }
+        source: playPauseButton.running ? "qrc:/Timro/resources/button/time/pause.png" : "qrc:/Timro/resources/button/time/play.png"
+        onClicked: {
+            // TODO add
+            running = !running
         }
+    }
 
-        TimeBar {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+    Item {
+        width: stopButton.width
+        height: stopButton.height
+        RotatingButton {
+            id: stopButton
+            source: "qrc:/Timro/resources/button/time/stop.png"
+            visible: playPauseButton.running
+            onClicked: {
+                playPauseButton.running = false
+                // TODO add reset functionality
+            }
         }
     }
 }

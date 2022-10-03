@@ -17,19 +17,27 @@ qt_add_qml_module(appTimro
     VERSION 1.0
     QML_FILES
         qml/main.qml
+        qml/panels/BasePanel.qml
         qml/panels/TimeControlPanel.qml
-        qml/components/time/TimeBar.qml
+        qml/panels/ProjectPanel.qml
+        qml/panels/TimePanel.qml
         qml/components/time/TimeDisplay.qml
         qml/components/time/TimeEditDisplay.qml
         qml/components/time/TimeProgressCircle.qml
         qml/components/time/TimeNumberSpinner.qml
         qml/components/time/TimeProgressArc.qml
-        qml/components/buttons/ControlButton.qml
+        qml/components/buttons/RotatingButton.qml
+        qml/components/buttons/ImageButton.qml
         qml/components/effects/RotatingShadowEffect.qml
+        qml/components/effects/GradientEffect.qml
     RESOURCES
-        resources/button/play.png
-        resources/button/pause.png
-        resources/button/stop.png
+        resources/button/time/play.png
+        resources/button/time/pause.png
+        resources/button/time/stop.png
+        resources/button/time/edit.png
+        resources/button/time/check.png
+        resources/button/time/reset.png
+        resources/button/time/cancel.png
 )
 
 qt6_add_shaders(appTimro "basic_shaders"

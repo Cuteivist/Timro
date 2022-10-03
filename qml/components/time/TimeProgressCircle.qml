@@ -24,7 +24,7 @@ Item {
                 id: timeInnerArc
                 centerX: progressCircle.width * 0.5
                 centerY: progressCircle.height * 0.5
-                radiusX: timeBar.height * 0.45
+                radiusX: progressCircle.height * 0.45
                 radiusY: radiusX
                 startAngle: 90
                 sweepAngle: 360
@@ -50,9 +50,8 @@ Item {
         radius: timeInnerArc.radiusX
         progress: currentValue / maxValue
         anchors.fill: parent
-        layer.effect: ShaderEffect {
-            property var colorSource: gradientRect
-            fragmentShader: "qrc:/resources/shaders/linearGradient.frag.qsb"
+        layer.effect: GradientEffect {
+            sourceRect: gradientRect
         }
     }
 

@@ -15,16 +15,34 @@ ApplicationWindow {
         color: "#DDD4E6"
     }
 
-    TimeControlPanel {
+    Column {
         anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
+            fill: parent
             leftMargin: 20
             rightMargin: 20
             topMargin: 5
         }
-        height: 200
-        // TODO should be draggable
+        spacing: 10
+        TimeControlPanel {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        TimePanel {
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+            height: 150
+        }
+
+        ProjectPanel {
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+            height: 100
+        }
     }
 }

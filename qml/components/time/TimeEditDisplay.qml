@@ -11,6 +11,10 @@ Item {
         if (!visible) {
             return
         }
+        reset()
+    }
+
+    function reset() {
         const fullMinutes = Math.floor(value / 60)
         const mins = (fullMinutes) % 60
         minutesListView.positionViewAtIndex(mins, ListView.Center)
@@ -31,11 +35,6 @@ Item {
             width: parent.width * 0.45
             startValue: 0
             endValue: 99
-
-            Component.onCompleted: { // debug
-                hourListView.positionViewAtIndex(7, ListView.Center)
-                minutesListView.positionViewAtIndex(30, ListView.Center)
-            }
         }
 
         Text {

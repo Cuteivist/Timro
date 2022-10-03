@@ -1,17 +1,11 @@
 import QtQuick
 import QtQuick.Controls
 
-Button {
+ImageButton {
     id: button
-
-    property string source
 
     width: 64
     height: 64
-    display: AbstractButton.IconOnly
-    flat: true
-    background: Item { }
-
     layer.enabled: true
     layer.effect: ShaderEffect {
         id: shader
@@ -32,11 +26,5 @@ Button {
         }
 
         fragmentShader: "qrc:/resources/shaders/buttonRotate.frag.qsb"
-    }
-
-    contentItem: Image {
-        source: button.source
-        width: 64
-        height: 64
     }
 }
