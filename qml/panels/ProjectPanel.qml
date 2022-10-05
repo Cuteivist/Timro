@@ -7,6 +7,7 @@ import "../components"
 BasePanel {
     id: panel
 
+    // TODO idea - display project icon
     BaseComboBox {
         id: projectComboBox
         width: parent.width * 0.4

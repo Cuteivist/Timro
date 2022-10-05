@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-import "../components/buttons"
+import "../components/controls"
 import "../components/time"
 
 Row {

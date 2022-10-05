@@ -5,6 +5,7 @@ BaseButton {
     id: button
 
     property string source
+    property real iconSize: width
 
     width: 24
     height: 24
@@ -13,7 +14,8 @@ BaseButton {
 
     contentItem: Image {
         source: button.source
-        width: button.width
-        height: button.width
+        width: button.iconSize
+        height: button.iconSize
+        smooth: true
     }
 }

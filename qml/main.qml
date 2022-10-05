@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import "panels"
 
@@ -15,34 +16,57 @@ ApplicationWindow {
         color: "#DDD4E6"
     }
 
-    Column {
+    ColumnLayout {
         anchors {
-            fill: parent
-            leftMargin: 20
-            rightMargin: 20
+            top: parent.top
+            left: mainMenu.right
+            right: parent.right
+            bottom: parent.bottom
+            leftMargin: 10
+            rightMargin: 10
             topMargin: 5
         }
-        spacing: 10
+
         TimeControlPanel {
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-            }
+            Layout.alignment: Qt.AlignHCenter
         }
 
-        TimePanel {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-            height: 150
-        }
+        Flickable {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Column {
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
+                height: childrenRect.height
+                spacing: 10
 
-        ProjectPanel {
-            anchors {
-                left: parent.left
-                right: parent.right
+                TimePanel {
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    height: 150
+                }
+
+                ProjectPanel {
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    height: 80
+                }
             }
-            height: 80
+        }
+    }
+
+    MainMenu {
+        id: mainMenu
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
         }
     }
 }

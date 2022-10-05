@@ -21,6 +21,8 @@ qt_add_qml_module(appTimro
         qml/panels/TimeControlPanel.qml
         qml/panels/ProjectPanel.qml
         qml/panels/TimePanel.qml
+        qml/panels/MainMenu.qml
+        qml/components/AutoSizeText.qml
         qml/components/time/TimeDisplay.qml
         qml/components/time/TimeEditDisplay.qml
         qml/components/time/TimeProgressCircle.qml
@@ -30,6 +32,7 @@ qt_add_qml_module(appTimro
         qml/components/controls/ImageButton.qml
         qml/components/controls/BaseButton.qml
         qml/components/controls/BaseComboBox.qml
+        qml/components/controls/MenuButton.qml
         qml/components/effects/RotatingShadowEffect.qml
         qml/components/effects/GradientEffect.qml
     RESOURCES
@@ -40,6 +43,9 @@ qt_add_qml_module(appTimro
         resources/button/time/check.png
         resources/button/time/reset.png
         resources/button/time/cancel.png
+        resources/menu/menu_show.png
+        resources/menu/settings.png
+        resources/menu/task.png
 )
 
 qt6_add_shaders(appTimro "basic_shaders"
