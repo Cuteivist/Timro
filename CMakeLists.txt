@@ -26,8 +26,10 @@ qt_add_qml_module(appTimro
         qml/components/time/TimeProgressCircle.qml
         qml/components/time/TimeNumberSpinner.qml
         qml/components/time/TimeProgressArc.qml
-        qml/components/buttons/RotatingButton.qml
-        qml/components/buttons/ImageButton.qml
+        qml/components/controls/RotatingButton.qml
+        qml/components/controls/ImageButton.qml
+        qml/components/controls/BaseButton.qml
+        qml/components/controls/BaseComboBox.qml
         qml/components/effects/RotatingShadowEffect.qml
         qml/components/effects/GradientEffect.qml
     RESOURCES

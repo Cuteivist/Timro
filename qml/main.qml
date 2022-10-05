@@ -42,7 +42,7 @@ ApplicationWindow {
                 left: parent.left
                 right: parent.right
             }
-            height: 100
+            height: 80
         }
     }
 }

@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-Button {
+BaseButton {
     id: button
 
     property string source
@@ -9,7 +9,6 @@ Button {
     width: 24
     height: 24
     display: AbstractButton.IconOnly
-    flat: true
     background: Item { }
 
     contentItem: Image {
