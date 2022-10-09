@@ -22,30 +22,48 @@ qt_add_qml_module(appTimro
         qml/panels/ProjectPanel.qml
         qml/panels/TimePanel.qml
         qml/panels/MainMenu.qml
+        qml/panels/ProjectListPanel.qml
+        qml/panels/TaskListPanel.qml
+        qml/panels/ListPanel.qml
+        qml/pages/BasePage.qml
+        qml/pages/HomePage.qml
+        qml/pages/ProjectListPage.qml
+        qml/popups/BaseConfirmPopup.qml
+        qml/popups/TimeTumblerPopup.qml
         qml/components/AutoSizeText.qml
+        qml/components/panel/PanelTitle.qml
         qml/components/time/TimeDisplay.qml
         qml/components/time/TimeEditDisplay.qml
         qml/components/time/TimeProgressCircle.qml
         qml/components/time/TimeNumberSpinner.qml
         qml/components/time/TimeProgressArc.qml
+        qml/components/time/TimeTumbler.qml
         qml/components/controls/RotatingButton.qml
         qml/components/controls/ImageButton.qml
         qml/components/controls/BaseButton.qml
         qml/components/controls/BaseComboBox.qml
         qml/components/controls/MenuButton.qml
+        qml/components/delegates/PanelListDelegate.qml
         qml/components/effects/RotatingShadowEffect.qml
         qml/components/effects/GradientEffect.qml
+        qml/utils/ModelUtils.js
+        qml/utils/TimeUtils.js
+        qml/utils/DrawUtils.js
     RESOURCES
         resources/button/time/play.png
         resources/button/time/pause.png
         resources/button/time/stop.png
-        resources/button/time/edit.png
-        resources/button/time/check.png
-        resources/button/time/reset.png
-        resources/button/time/cancel.png
+        resources/button/edit.png
+        resources/button/check.png
+        resources/button/reset.png
+        resources/button/cancel.png
+        resources/button/select_all.png
+        resources/button/add.png
+        resources/button/trash.png
         resources/menu/menu_show.png
         resources/menu/settings.png
         resources/menu/task.png
+        resources/selected.png
 )
 
 qt6_add_shaders(appTimro "basic_shaders"

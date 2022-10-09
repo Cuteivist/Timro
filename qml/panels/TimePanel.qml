@@ -48,7 +48,7 @@ BasePanel {
         ImageButton {
             width: 24
             height: width
-            source: "qrc:/Timro/resources/button/time/edit.png"
+            source: "qrc:/Timro/resources/button/edit.png"
             visible: !priv.timeEditMode
             onClicked: priv.timeEditMode = true
         }
@@ -56,7 +56,7 @@ BasePanel {
         ImageButton {
             width: 24
             height: width
-            source: "qrc:/Timro/resources/button/time/check.png"
+            source: "qrc:/Timro/resources/button/check.png"
             visible: priv.timeEditMode
             onClicked: {
                 priv.currentValue = timeEditDisplay.editValue
@@ -67,7 +67,7 @@ BasePanel {
         ImageButton {
             width: 24
             height: width
-            source: "qrc:/Timro/resources/button/time/cancel.png"
+            source: "qrc:/Timro/resources/button/cancel.png"
             visible: priv.timeEditMode
             onClicked: {
                 priv.timeEditMode = false
@@ -77,7 +77,7 @@ BasePanel {
         ImageButton {
             width: 24
             height: width
-            source: "qrc:/Timro/resources/button/time/reset.png"
+            source: "qrc:/Timro/resources/button/reset.png"
             visible: priv.timeEditMode
             onClicked: timeEditDisplay.reset()
         }

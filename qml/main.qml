@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import "panels"
+import "pages"
 
 ApplicationWindow {
     id: mainWindow
@@ -34,29 +35,17 @@ ApplicationWindow {
         Flickable {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Column {
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
-                height: childrenRect.height
-                spacing: 10
+            clip: true
+            contentHeight: stackView.currentItem.height
+            bottomMargin: 10
+            boundsBehavior: Flickable.StopAtBounds
+            ScrollIndicator.vertical: ScrollIndicator { }
 
-                TimePanel {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
-                    height: 150
-                }
-
-                ProjectPanel {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
-                    height: 80
-                }
+            StackView {
+                id: stackView
+                anchors.fill: parent
+//                initialItem: HomePage { }
+                initialItem: ProjectListPage { }
             }
         }
     }

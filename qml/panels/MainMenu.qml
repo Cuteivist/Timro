@@ -28,6 +28,9 @@ Rectangle {
         MenuButton {
             source: "qrc:/Timro/resources/menu/task.png"
             iconSize: mainMenu.iconSize
+            onClicked: {
+                // todo open project page
+            }
         }
     }
 

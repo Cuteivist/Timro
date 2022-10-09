@@ -11,11 +11,13 @@ BaseButton {
     height: 24
     display: AbstractButton.IconOnly
     background: Item { }
+    opacity: enabled ? 1.0 : 0.3
 
     contentItem: Image {
         source: button.source
         width: button.iconSize
         height: button.iconSize
         smooth: true
+        antialiasing: true
     }
 }

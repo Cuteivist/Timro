@@ -3,7 +3,7 @@ import QtQuick
 Item {
     id: timeDisplay
 
-    readonly property int editValue: ((hourListView.currentIndex * 60) + minutesListView.currentIndex) * 60
+    readonly property int editValue: tumbler.selectedValueInSeconds
 
     property int value: 0
 
@@ -15,48 +15,13 @@ Item {
     }
 
     function reset() {
-        const fullMinutes = Math.floor(value / 60)
-        const mins = (fullMinutes) % 60
-        minutesListView.positionViewAtIndex(mins, ListView.Center)
-        const hours = Math.floor(fullMinutes / 60)
-        hourListView.positionViewAtIndex(hours, ListView.Center)
+        tumbler.reset(value)
     }
 
-    Row {
+    TimeTumbler {
+        id: tumbler
         anchors.centerIn: parent
         width: parent.width * 0.7
         height: parent.height
-        TimeNumberSpinner {
-            id: hourListView
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-            }
-            width: parent.width * 0.45
-            startValue: 0
-            endValue: 99
-        }
-
-        Text {
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width - (hourListView.width * 2)
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignHCenter
-            text : ":"
-            minimumPixelSize: 10
-            font.pixelSize: 50
-            fontSizeMode: Text.HorizontalFit
-        }
-
-        TimeNumberSpinner {
-            id: minutesListView
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-            }
-            width: hourListView.width
-            startValue: 0
-            endValue: 59
-        }
     }
 }

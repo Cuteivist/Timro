@@ -26,11 +26,12 @@ Tumbler {
     }
     delegate: Text {
         width: root.width
-        height: root.height * 0.3
+        height: root.height / visibleItemCount
+        horizontalAlignment: Qt.AlignHCenter
         text: modelData
         font.pixelSize: 50
         minimumPixelSize: 10
-        fontSizeMode: Text.HorizontalFit
+        fontSizeMode: Text.Fit
         scale: Math.abs(Tumbler.displacement) > 0.5 ? 0.7 : 1.0
 
         Behavior on scale {
