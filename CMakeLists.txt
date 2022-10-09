@@ -6,15 +6,73 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
+find_package(Qt6 COMPONENTS ShaderTools)
 
 qt_add_executable(appTimro
-    main.cpp
+    src/main.cpp
 )
 
 qt_add_qml_module(appTimro
     URI Timro
     VERSION 1.0
-    QML_FILES main.qml 
+    QML_FILES
+        qml/main.qml
+        qml/panels/BasePanel.qml
+        qml/panels/TimeControlPanel.qml
+        qml/panels/ProjectPanel.qml
+        qml/panels/TimePanel.qml
+        qml/panels/MainMenu.qml
+        qml/panels/ProjectListPanel.qml
+        qml/panels/TaskListPanel.qml
+        qml/panels/ListPanel.qml
+        qml/pages/BasePage.qml
+        qml/pages/HomePage.qml
+        qml/pages/ProjectListPage.qml
+        qml/popups/BaseConfirmPopup.qml
+        qml/popups/TimeTumblerPopup.qml
+        qml/components/AutoSizeText.qml
+        qml/components/panel/PanelTitle.qml
+        qml/components/time/TimeDisplay.qml
+        qml/components/time/TimeEditDisplay.qml
+        qml/components/time/TimeProgressCircle.qml
+        qml/components/time/TimeNumberSpinner.qml
+        qml/components/time/TimeProgressArc.qml
+        qml/components/time/TimeTumbler.qml
+        qml/components/controls/RotatingButton.qml
+        qml/components/controls/ImageButton.qml
+        qml/components/controls/BaseButton.qml
+        qml/components/controls/BaseComboBox.qml
+        qml/components/controls/MenuButton.qml
+        qml/components/delegates/PanelListDelegate.qml
+        qml/components/effects/RotatingShadowEffect.qml
+        qml/components/effects/GradientEffect.qml
+        qml/utils/ModelUtils.js
+        qml/utils/TimeUtils.js
+        qml/utils/DrawUtils.js
+    RESOURCES
+        resources/button/time/play.png
+        resources/button/time/pause.png
+        resources/button/time/stop.png
+        resources/button/edit.png
+        resources/button/check.png
+        resources/button/reset.png
+        resources/button/cancel.png
+        resources/button/select_all.png
+        resources/button/add.png
+        resources/button/trash.png
+        resources/menu/menu_show.png
+        resources/menu/settings.png
+        resources/menu/task.png
+        resources/selected.png
+)
+
+qt6_add_shaders(appTimro "basic_shaders"
+    PREFIX /
+    FILES
+        resources/shaders/linearGradient.frag
+        resources/shaders/buttonRotate.frag
+        resources/shaders/timeListOpacity.frag
+        resources/shaders/rotatingShadow.frag
 )
 
 set_target_properties(appTimro PROPERTIES
