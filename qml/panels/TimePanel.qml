@@ -8,16 +8,14 @@ BasePanel {
     QtObject {
         id: priv
 
-        property int currentValue: 0 // TODO move to cpp
-        readonly property int maxValue: 8 * 60 * 60 // TODO move to cpp
         property bool timeEditMode: false
     }
 
     TimeProgressCircle {
         id: timeCircle
         anchors.fill: parent
-        currentValue: priv.currentValue
-        maxValue: priv.maxValue
+        currentValue: timeController.workTime
+        maxValue: timeController.maxWorkTime
         editMode: timeEditDisplay.visible
         editValue: timeEditDisplay.editValue
     }
@@ -27,14 +25,14 @@ BasePanel {
         anchors.centerIn: parent
         width: timeCircle.radius * 2
         height: width
-        value: priv.currentValue
+        value: timeCircle.currentValue
         visible: !priv.timeEditMode
     }
 
     TimeEditDisplay {
         id: timeEditDisplay
         anchors.fill: timeDisplay
-        value: priv.currentValue
+        value: timeCircle.currentValue
         visible: priv.timeEditMode
     }
 
@@ -59,7 +57,7 @@ BasePanel {
             source: "qrc:/Timro/resources/button/check.png"
             visible: priv.timeEditMode
             onClicked: {
-                priv.currentValue = timeEditDisplay.editValue
+                timeController.workTime = timeEditDisplay.editValue
                 priv.timeEditMode = false
             }
         }

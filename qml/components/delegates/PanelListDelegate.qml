@@ -9,7 +9,6 @@ Rectangle {
     signal clicked()
     signal pressAndHold()
 
-    width: parent.width
     height: 40
     radius: 5
     color: "#80FFFFFF"

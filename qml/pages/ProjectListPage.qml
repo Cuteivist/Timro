@@ -15,13 +15,11 @@ BasePage {
         spacing: 10
 
         ProjectListPanel {
-            id: projectListPanel
-
             onShowTimePopup: {
                 timePopup.caller = this
                 let headerText
                 if (editMode) {
-                    headerText = qsTr("Select project '%1' max work hours").arg(selectedName)
+                    headerText = qsTr("Select project '%1' max work hours").arg(model.name(selectedId))
                 } else {
                     headerText = qsTr("Select project max work hours")
                 }
@@ -29,20 +27,18 @@ BasePage {
             }
         }
 
-        TaskListPanel {
-            id: taskListPanel
-
-            onShowTimePopup: {
-                timePopup.caller = this
-                let headerText
-                if (editMode) {
-                    headerText = qsTr("Select task '%1' max work hours").arg(selectedName)
-                } else {
-                    headerText = qsTr("Select task max work hours")
-                }
-                timePopup.show(selectedMaxWorkTime, headerText)
-            }
-        }
+//        TaskListPanel {
+//            onShowTimePopup: {
+//                timePopup.caller = this
+//                let headerText
+//                if (editMode) {
+//                    headerText = qsTr("Select task '%1' max work hours").arg(selectedName)
+//                } else {
+//                    headerText = qsTr("Select task max work hours")
+//                }
+//                timePopup.show(selectedMaxWorkTime, headerText)
+//            }
+//        }
     }
 
     TimeTumblerPopup {

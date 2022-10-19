@@ -44,7 +44,7 @@ ListPanel {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    // TODO show time popup
+
                 }
             }
         },
@@ -52,6 +52,4 @@ ListPanel {
             Layout.fillHeight: true
         }
     ]
-
-    // TODO add time popup here
 }

@@ -10,7 +10,14 @@ Rectangle {
 
     readonly property int iconSize: 32
 
+    signal projectListMenuClicked()
+    signal homeMenuClicked()
+
     Column {
+        id: buttonColumn
+
+        property var currentActiveButton: homeButton
+
         anchors {
             top: parent.top
             left: parent.left
@@ -21,15 +28,29 @@ Rectangle {
             source: "qrc:/Timro/resources/menu/menu_show.png"
             iconSize: mainMenu.iconSize
             onClicked: {
-                // todo extend menu
+                // TODO extend menu
             }
         }
 
         MenuButton {
+            id: homeButton
+            source: "qrc:/Timro/resources/menu/home.png"
+            iconSize: mainMenu.iconSize
+            active: buttonColumn.currentActiveButton === this
+            onClicked: {
+                buttonColumn.currentActiveButton = this
+                homeMenuClicked()
+            }
+        }
+
+        MenuButton {
+            id: projectListButton
             source: "qrc:/Timro/resources/menu/task.png"
             iconSize: mainMenu.iconSize
+            active: buttonColumn.currentActiveButton === this
             onClicked: {
-                // todo open project page
+                buttonColumn.currentActiveButton = this
+                projectListMenuClicked()
             }
         }
     }

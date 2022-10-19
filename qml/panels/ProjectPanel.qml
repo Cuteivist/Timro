@@ -4,6 +4,8 @@ import QtQuick.Controls
 import "../components/controls"
 import "../components"
 
+import "../utils/TimeUtils.js" as TimeUtils
+
 BasePanel {
     id: panel
 
@@ -17,16 +19,27 @@ BasePanel {
             left: parent.left
             margins: 5
         }
-        model: ListModel { // TODO use cpp model
-            ListElement { name: "ProjectA" }
-            ListElement { name: "ProjectB" }
-            ListElement { name: "ProjectC" }
+        model: projectController.model
+        onCountChanged: {
+            const id = projectController.currentProjectId
+            if (id < 0) {
+                currentIndex = 0
+                return
+            }
+            currentIndex = indexOfValue(projectController.currentProjectId)
         }
         textRole: "name"
+        valueRole: "id"
+        onActivated: projectController.currentProjectId = currentValue
     }
 
     AutoSizeText {
-        text: String("%1  [%2%]").arg("05:12:15").arg("80") // TODO retrive data from model
+        text: {
+            const maxWorkTime = timeController.maxWorkTime
+            const workTime = timeController.workTime
+            const percent = Math.round((workTime / maxWorkTime) * 100)
+            return String("%1  [%2%]").arg(TimeUtils.toString(workTime)).arg(percent)
+        }
         height: projectComboBox.height * 0.9
         anchors {
             top: projectComboBox.top
@@ -34,31 +47,31 @@ BasePanel {
         }
     }
 
-    BaseComboBox {
-        id: taskComboBox
-        height: projectComboBox.height * 0.9
+//    BaseComboBox {
+//        id: taskComboBox
+//        height: projectComboBox.height * 0.9
 
-        anchors {
-            left: projectComboBox.left
-            right: projectComboBox.right
-            top: projectComboBox.bottom
-        }
-        textOpacity: 0.7
-        model: ListModel { // TODO use cpp model
-            ListElement { name: "TaskA" }
-            ListElement { name: "TaskB" }
-            ListElement { name: "TaskC" }
-        }
-        textRole: "name"
-    }
+//        anchors {
+//            left: projectComboBox.left
+//            right: projectComboBox.right
+//            top: projectComboBox.bottom
+//        }
+//        textOpacity: 0.7
+//        model: ListModel {
+//            ListElement { name: "TaskA" }
+//            ListElement { name: "TaskB" }
+//            ListElement { name: "TaskC" }
+//        }
+//        textRole: "name"
+//    }
 
-    AutoSizeText {
-        text: String("%1  [%2%]").arg("02:12:15").arg("22") // TODO retrive data from model
-        height: projectComboBox.height * 0.9
-        opacity: taskComboBox.textOpacity
-        anchors {
-            top: taskComboBox.top
-            left: taskComboBox.right
-        }
-    }
+//    AutoSizeText {
+//        text: String("%1  [%2%]").arg("02:12:15").arg("22")
+//        height: projectComboBox.height * 0.9
+//        opacity: taskComboBox.textOpacity
+//        anchors {
+//            top: taskComboBox.top
+//            left: taskComboBox.right
+//        }
+//    }
 }

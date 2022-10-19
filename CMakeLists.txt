@@ -1,18 +1,58 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Timro VERSION 0.1 LANGUAGES CXX)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
-find_package(Qt6 COMPONENTS ShaderTools)
+project(Timro VERSION 0.1 LANGUAGES CXX)
 
-qt_add_executable(appTimro
-    src/main.cpp
+find_package(Qt6 6.2 COMPONENTS REQUIRED Core Quick Sql)
+find_package(Qt6 REQUIRED COMPONENTS Core ShaderTools Sql)
+
+include_directories(src)
+
+set(PROJECT_HEADERS
+    src/TimroCore.h
+    src/controllers/TimeController.h
+    src/controllers/ProjectController.h
+    src/helpers/DirHelper.h
+    src/database/DatabaseProvider.h
+    src/database/SqliteDatabaseProvider.h
+    src/database/DatabaseMigrationWorker.h
+    src/database/DatabaseCleaner.h
+    src/sql/SqlWorker.h
+    src/models/SqlModel.h
+    src/models/ProjectModel.h
+    src/QtSingleApp.h
 )
 
-qt_add_qml_module(appTimro
+set(PROJECT_SOURCES
+    src/main.cpp
+    src/TimroCore.cpp
+    src/controllers/TimeController.cpp
+    src/controllers/ProjectController.cpp
+    src/helpers/DirHelper.cpp
+    src/database/DatabaseProvider.cpp
+    src/database/SqliteDatabaseProvider.cpp
+    src/database/DatabaseMigrationWorker.cpp
+    src/database/DatabaseCleaner.cpp
+    src/sql/SqlWorker.cpp
+    src/models/SqlModel.cpp
+    src/models/ProjectModel.cpp
+    src/QtSingleApp.cpp
+)
+
+qt_add_executable(Timro
+    ${PROJECT_HEADERS}
+    ${PROJECT_SOURCES}
+)
+
+qt_add_qml_module(Timro
     URI Timro
     VERSION 1.0
     QML_FILES
@@ -63,10 +103,11 @@ qt_add_qml_module(appTimro
         resources/menu/menu_show.png
         resources/menu/settings.png
         resources/menu/task.png
+        resources/menu/home.png
         resources/selected.png
 )
 
-qt6_add_shaders(appTimro "basic_shaders"
+qt6_add_shaders(Timro "basic_shaders"
     PREFIX /
     FILES
         resources/shaders/linearGradient.frag
@@ -75,17 +116,8 @@ qt6_add_shaders(appTimro "basic_shaders"
         resources/shaders/rotatingShadow.frag
 )
 
-set_target_properties(appTimro PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
+set_target_properties(Timro PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(appTimro
-    PRIVATE Qt6::Quick)
-
-install(TARGETS appTimro
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+target_link_libraries(Timro PRIVATE Qt6::Sql Qt6::Quick Qt6::Core)

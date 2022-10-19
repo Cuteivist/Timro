@@ -44,10 +44,14 @@ ApplicationWindow {
             StackView {
                 id: stackView
                 anchors.fill: parent
-//                initialItem: HomePage { }
-                initialItem: ProjectListPage { }
+                initialItem: HomePage { }
             }
         }
+    }
+
+    Component {
+        id: projectList
+        ProjectListPage { }
     }
 
     MainMenu {
@@ -56,6 +60,15 @@ ApplicationWindow {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
+        }
+        onHomeMenuClicked: {
+            if (stackView.depth > 1)
+                stackView.pop()
+        }
+
+        onProjectListMenuClicked: {
+            if (stackView.depth === 1)
+                stackView.push(projectList)
         }
     }
 }

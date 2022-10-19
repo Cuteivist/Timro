@@ -40,7 +40,7 @@ ComboBox {
     delegate: ItemDelegate {
         hoverEnabled: true
         width: ListView.view.width
-        text: comboBox.model.get(index)[comboBox.textRole]
+        text: comboBox.textAt(index)
         highlighted: comboBox.highlightedIndex === index
         palette.highlight: "#600000FF"
     }

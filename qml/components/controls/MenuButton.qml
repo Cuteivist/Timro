@@ -7,10 +7,18 @@ Item {
     property alias iconSize: button.iconSize
     property bool lineAtTheBottom: true
 
+    property bool active: false
+
     signal clicked()
 
     width: parent.width
     height: parent.width
+
+    Rectangle {
+        anchors.fill: parent
+        color: active ? "white" : "transparent"
+        opacity: 0.3
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -26,7 +34,6 @@ Item {
             height: width
             rotation: parent.rotation
             onClicked: menuButton.clicked()
-            // TODO add shader to change color to white
         }
 
         Rectangle {
