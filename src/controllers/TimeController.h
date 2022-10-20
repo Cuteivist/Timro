@@ -36,13 +36,17 @@ public slots:
     void onCurrentProjectChanged(const int projectId, const int maxWorkTime);
     void onCurrentProjectMaxWorkTimeChanged(const int maxWorkTime);
 
+    void startBreak();
+
 signals:
     void workTimeChanged(const int workTime) const;
     void maxWorkTimeChanged(const int workTime) const;
     void runningChanged(const bool running) const;
+    void requestSaveWorklog() const;
 
 private slots:
     void onWorkTimerTimeout();
+    void onRequestSaveWorklog();
 
 private:
     void saveWorkTimeToWorklog();

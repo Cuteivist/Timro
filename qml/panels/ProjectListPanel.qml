@@ -39,7 +39,7 @@ ListPanel {
 
     onConfirmAddClicked: {
         let validated = true
-        // TODO validate fields and show corresponding errors
+        // TODO add validate fields and show corresponding errors
         if (nameInput.text.length == 0 || selectedMaxWorkTime == 0) {
             validated = false
         }
@@ -68,9 +68,9 @@ ListPanel {
     }
 
     onDeleteClicked: {
-        // TODO question prompt
+        // TODO show question prompt
         if (!model.remove(selectedId)) {
-            // TODO error handling
+            // TODO add error handling
         }
         selectedIndex = -1
     }
@@ -120,7 +120,7 @@ ListPanel {
     }
 
     editFields: [
-        // TODO header (adding or editing project ABC)
+        // TODO implement header (adding or editing project ABC)
         Text {
             text: qsTr("Name:")
         },

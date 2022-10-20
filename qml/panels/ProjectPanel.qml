@@ -9,9 +9,18 @@ import "../utils/TimeUtils.js" as TimeUtils
 BasePanel {
     id: panel
 
-    // TODO idea - display project icon
     BaseComboBox {
         id: projectComboBox
+
+        function updateCurrentIndex() {
+            const id = projectController.currentProjectId
+            if (id < 0) {
+                currentIndex = 0
+                return
+            }
+            currentIndex = indexOfValue(projectController.currentProjectId)
+        }
+
         width: parent.width * 0.4
         height: parent.height * 0.4
         anchors {
@@ -20,17 +29,17 @@ BasePanel {
             margins: 5
         }
         model: projectController.model
-        onCountChanged: {
-            const id = projectController.currentProjectId
-            if (id < 0) {
-                currentIndex = 0
-                return
-            }
-            currentIndex = indexOfValue(projectController.currentProjectId)
-        }
+        onCountChanged: updateCurrentIndex()
         textRole: "name"
         valueRole: "id"
         onActivated: projectController.currentProjectId = currentValue
+
+        Connections {
+            target: projectController
+            function onCurrentProjectIdChanged() {
+                projectComboBox.updateCurrentIndex()
+            }
+        }
     }
 
     AutoSizeText {

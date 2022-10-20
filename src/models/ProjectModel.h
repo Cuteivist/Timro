@@ -25,6 +25,10 @@ public:
     bool changeCurrentProject(const int id);
     int currentProjectId();
 
+    int lastCreatedProjectId();
+
+    QHash<int, QString> projectList() const;
+
     Q_INVOKABLE bool add(const QString &name, const int maxWorkTime);
     Q_INVOKABLE bool exists(const QString &name) const;
     Q_INVOKABLE bool update(const int id, const QString &name, const int maxWorkTime);
@@ -34,7 +38,10 @@ public:
     Q_INVOKABLE int maxWorkTime(const int id) const;
 
 signals:
-    void currentProjectMaxWorkTimeChanged(const int maxWorkTime);
+    void currentProjectMaxWorkTimeChanged(const int maxWorkTime) const;
+    void projectAdded(const int projectId, const QString &name) const;
+    void projectRemoved(const int projectId) const;
+    void projectRenamed(const int projectId, const QString &name) const;
 
 protected:
     QString table() const override;

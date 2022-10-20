@@ -11,15 +11,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(Timro VERSION 0.1 LANGUAGES CXX)
 
-find_package(Qt6 6.2 COMPONENTS REQUIRED Core Quick Sql)
-find_package(Qt6 REQUIRED COMPONENTS Core ShaderTools Sql)
+find_package(Qt6 6.4 COMPONENTS REQUIRED Core Quick Sql Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core ShaderTools Sql Widgets)
 
 include_directories(src)
+
+qt_standard_project_setup()
 
 set(PROJECT_HEADERS
     src/TimroCore.h
     src/controllers/TimeController.h
     src/controllers/ProjectController.h
+    src/controllers/TrayController.h
     src/helpers/DirHelper.h
     src/database/DatabaseProvider.h
     src/database/SqliteDatabaseProvider.h
@@ -36,6 +39,7 @@ set(PROJECT_SOURCES
     src/TimroCore.cpp
     src/controllers/TimeController.cpp
     src/controllers/ProjectController.cpp
+    src/controllers/TrayController.cpp
     src/helpers/DirHelper.cpp
     src/database/DatabaseProvider.cpp
     src/database/SqliteDatabaseProvider.cpp
@@ -105,9 +109,10 @@ qt_add_qml_module(Timro
         resources/menu/task.png
         resources/menu/home.png
         resources/selected.png
+        resources/app_icon.png
 )
 
-qt6_add_shaders(Timro "basic_shaders"
+qt_add_shaders(Timro "basic_shaders"
     PREFIX /
     FILES
         resources/shaders/linearGradient.frag
@@ -120,4 +125,4 @@ set_target_properties(Timro PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(Timro PRIVATE Qt6::Sql Qt6::Quick Qt6::Core)
+target_link_libraries(Timro PRIVATE Qt6::Sql Qt6::Quick Qt6::Core Qt6::Widgets)

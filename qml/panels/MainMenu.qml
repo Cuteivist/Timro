@@ -28,7 +28,7 @@ Rectangle {
             source: "qrc:/Timro/resources/menu/menu_show.png"
             iconSize: mainMenu.iconSize
             onClicked: {
-                // TODO extend menu
+                // TODO implement extending menu
             }
         }
 

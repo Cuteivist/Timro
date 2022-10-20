@@ -12,6 +12,8 @@ ApplicationWindow {
     visible: true
     title: "Timro"
 
+    onVisibilityChanged: trayController.onVisibilityChanged(mainWindow.visibility)
+
     Rectangle {
         anchors.fill: parent
         color: "#DDD4E6"
@@ -69,6 +71,25 @@ ApplicationWindow {
         onProjectListMenuClicked: {
             if (stackView.depth === 1)
                 stackView.push(projectList)
+        }
+    }
+
+    Connections {
+        target: trayController
+        function onHideWindow() {
+            mainWindow.hide()
+        }
+        function onShowWindow() {
+            mainWindow.showNormal()
+            mainWindow.raise()
+            mainWindow.requestActivate()
+        }
+        function onToggleWindowVisibility() {
+            if (mainWindow.visible) {
+                onHideWindow()
+            } else {
+                onShowWindow()
+            }
         }
     }
 }

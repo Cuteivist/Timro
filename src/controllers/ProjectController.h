@@ -24,9 +24,14 @@ signals:
     void currentProjectChanged(const int projectId, const int maxWorkTime) const;
     void currentProjectIdChanged(const int currentProjectId) const;
 
+private slots:
+    void onProjectRemoved(const int projectId);
+    void onProjectAdded(const int projectId, const QString &name);
+
 private:
     int mCurrentProjectId = -1;
     ProjectModel mProjectModel;
+
 };
 
 #endif // PROJECTCONTROLLER_H

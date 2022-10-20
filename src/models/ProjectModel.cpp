@@ -74,16 +74,30 @@ int ProjectModel::currentProjectId()
             return data(modelIndex, IdRole).toInt();
         }
     }
+    return -1;
+}
 
-    // No project is marked current. Marking last one
+int ProjectModel::lastCreatedProjectId()
+{
     for (int i = rowCount() - 1 ; i >= 0 ; --i) {
         QModelIndex modelIndex = index(i, 0);
         if (!data(modelIndex, DeletedRole).toBool()) {
-            setData(modelIndex, true, IsCurrentRole);
             return data(modelIndex, IdRole).toInt();
         }
     }
     return -1;
+}
+
+QHash<int, QString> ProjectModel::projectList() const
+{
+    QHash<int, QString> result;
+    const int count = rowCount();
+    result.reserve(count);
+    for (int i = 0 ; i < count ; ++i) {
+        QModelIndex modelIndex = index(i, 0);
+        result.insert(data(modelIndex, IdRole).toInt(), data(modelIndex, NameRole).toString());
+    }
+    return result;
 }
 
 bool ProjectModel::add(const QString &name, const int maxWorkTime)
@@ -95,7 +109,12 @@ bool ProjectModel::add(const QString &name, const int maxWorkTime)
     newRecord.setValue(roleToColumnIndex(SelectedTaskIdRole), -1);
     newRecord.setValue(roleToColumnIndex(DeletedRole), false);
     newRecord.remove(roleToColumnIndex(IdRole));
-    return insertNewRecord(newRecord);
+    const bool result = insertNewRecord(newRecord);
+    if (result) {
+        const int id = data(index(rowCount(), 0), IdRole).toInt();
+        emit projectAdded(id, name);
+    }
+    return result;
 }
 
 bool ProjectModel::exists(const QString &name) const
@@ -116,6 +135,7 @@ bool ProjectModel::update(const int id, const QString &name, const int maxWorkTi
     }
     if (data(index, NameRole).toString() != name) {
         setData(index, name, NameRole);
+        emit projectRenamed(id, name);
     }
     if (data(index, MaxWorkTimeRole).toInt() != maxWorkTime) {
         setData(index, maxWorkTime, MaxWorkTimeRole);
@@ -130,7 +150,9 @@ bool ProjectModel::remove(const int id)
         return false;
     }
     setData(index, true, DeletedRole);
+    // Re-apply filters
     select();
+    emit projectRemoved(id);
     return true;
 }
 

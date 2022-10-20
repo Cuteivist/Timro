@@ -15,6 +15,7 @@ TimeController::TimeController(QObject *parent)
     mWorkTimer.setTimerType(Qt::PreciseTimer);
     mWorkTimer.setInterval(1000);
     connect(&mWorkTimer, &QTimer::timeout, this, &TimeController::onWorkTimerTimeout);
+    connect(this, &TimeController::requestSaveWorklog, this, &TimeController::onRequestSaveWorklog);
 }
 
 void TimeController::init()
@@ -31,7 +32,7 @@ void TimeController::start()
 {
     if (mCurrentProjectId < 0) {
         qWarning() << "Trying to run timer for not existing project";
-        // TODO display warning
+        // TODO show warning display
         return;
     }
     if (mCurrentWorkSessionId < 0) {
@@ -162,6 +163,11 @@ void TimeController::onCurrentProjectMaxWorkTimeChanged(const int maxWorkTime)
     setMaxWorkTime(maxWorkTime);
 }
 
+void TimeController::startBreak()
+{
+    // TODO implement break
+}
+
 void TimeController::onWorkTimerTimeout()
 {
     setWorkTime(mWorkTime + 1);
@@ -169,6 +175,15 @@ void TimeController::onWorkTimerTimeout()
     if (mTimeSinceLastSave > SAVE_INTERVAL_SEC) {
         saveWorkTimeToWorklog();
     }
+}
+
+void TimeController::onRequestSaveWorklog()
+{
+    // If it is not running that means it is already saved
+    if (!running()) {
+        return;
+    }
+    saveWorkTimeToWorklog();
 }
 
 void TimeController::saveWorkTimeToWorklog()
