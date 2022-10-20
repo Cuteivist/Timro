@@ -2,6 +2,9 @@
 
 #include <QActionGroup>
 #include <QApplication>
+#include <QPainter>
+
+using namespace Qt::Literals::StringLiterals;
 
 namespace {
 const auto PROJECT_ID_PROPERTY = QLatin1StringView("project_id");
@@ -44,6 +47,25 @@ void TrayController::onTrayActivated(QSystemTrayIcon::ActivationReason activatio
     if (activationReason == QSystemTrayIcon::Trigger) {
         emit toggleWindowVisibility();
     }
+}
+
+void TrayController::onWorkTimeChanged(const int workTime)
+{
+    if (!mTrayIcon.icon().isNull()) {
+        return;
+    }
+
+    QPixmap pixmap(30,30);
+    pixmap.fill(QColor(144, 238, 144));
+
+    QPainter painter(&pixmap);
+
+    const int totalMinutes = qFloor(workTime / 60);
+    const QString minutes = QString::number(totalMinutes % 60);
+    const QString hours = QString::number(qFloor(totalMinutes / 60));
+
+    painter.drawText(pixmap.rect(), Qt::AlignCenter, u"%1:%2"_s.arg(hours, minutes));
+    mTrayIcon.setIcon(pixmap);
 }
 
 void TrayController::onCurrentProjectChanged(const int projectId)
@@ -95,6 +117,16 @@ void TrayController::onProjectRenamed(const int projectId, const QString &name)
     }
 }
 
+void TrayController::onRunningChanged(const bool running)
+{
+    if (running) {
+        mTrayIcon.setIcon(QIcon());
+        return;
+    }
+
+    mTrayIcon.setIcon(QApplication::windowIcon());
+}
+
 void TrayController::init()
 {
     QApplication* app = qobject_cast<QApplication*>(QApplication::instance());
@@ -105,6 +137,7 @@ void TrayController::init()
     mTrayIcon.setIcon(QApplication::windowIcon());
 
     connect(&mTrayIcon, &QSystemTrayIcon::activated, this, &TrayController::onTrayActivated);
+    connect(this, &TrayController::runningChanged, this, &TrayController::onRunningChanged);
 
     // TODO add connects to update tooltip
 

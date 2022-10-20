@@ -19,12 +19,16 @@ public:
 public slots:
     void onVisibilityChanged(QWindow::Visibility visibility);
     void onTrayActivated(QSystemTrayIcon::ActivationReason activationReason);
+    void onWorkTimeChanged(const int workTime);
 
     // Project group slots
     void onCurrentProjectChanged(const int projectId);
     void onProjectAdded(const int projectId, const QString &name);
     void onProjectRemoved(const int projectId);
     void onProjectRenamed(const int projectId, const QString &name);
+
+private slots:
+    void onRunningChanged(const bool running);
 
 signals:
     // outgoing
@@ -50,6 +54,7 @@ private:
     void initMenu();
 
     void updateToolTip();
+    void updateTrayIcon();
 
     void quit();
 };

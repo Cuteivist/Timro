@@ -37,6 +37,7 @@ void TimroCore::connectManagers()
 
     // Time
     connect(&mTimeController, &TimeController::runningChanged, &mTrayController, &TrayController::runningChanged);
+    connect(&mTimeController, &TimeController::workTimeChanged, &mTrayController, &TrayController::onWorkTimeChanged);
 
     // Tray
     connect(&mTrayController, &TrayController::toggleStartPause, this, [this]() {
