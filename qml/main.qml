@@ -92,4 +92,15 @@ ApplicationWindow {
             }
         }
     }
+
+    Shortcut {
+        sequence: "space"
+        onActivated: {
+            if (timeController.running) {
+                timeController.pause()
+            } else {
+                timeController.start()
+            }
+        }
+    }
 }

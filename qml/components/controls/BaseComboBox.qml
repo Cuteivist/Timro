@@ -38,6 +38,20 @@ ComboBox {
         }
     }
     delegate: ItemDelegate {
+        indicator: Rectangle {
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                leftMargin: 5
+            }
+            width: 10
+            height: width
+            radius: width * 0.5
+            color: "#1981A1"
+            visible: currentIndex === index
+        }
+
+        leftPadding: 20
         hoverEnabled: true
         width: ListView.view.width
         text: comboBox.textAt(index)

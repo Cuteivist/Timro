@@ -150,10 +150,10 @@ void TimeController::onCurrentProjectChanged(const int projectId, const int maxW
         qWarning() << "Invalid project id";
         return;
     }
-    mCurrentProjectId = projectId;
     if (running()) {
         saveWorkTimeToWorklog();
     }
+    mCurrentProjectId = projectId;
     setWorkTime(projectWorkTime(projectId));
     setMaxWorkTime(maxWorkTime);
 }
