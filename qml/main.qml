@@ -103,4 +103,42 @@ ApplicationWindow {
             }
         }
     }
+
+    // TODO move everything below to WindowContainer
+    Connections {
+        target: timeController
+        function onBreakStarted() {
+            breakWindow.show()
+        }
+    }
+
+    // TODO move to BreakWindow file
+    Window {
+        id: breakWindow
+        flags: Qt.Dialog | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+        modality: Qt.ApplicationModal
+
+        x: Screen.width/2 - width/2
+        y: Screen.height/2 - height/2
+
+        width: 300
+        height: 200
+
+        Rectangle {
+            anchors.fill: parent
+            color: "#DDD4E6"
+        }
+
+        // TODO add text: taking break, current project name
+        // TODO add current break time display
+        // TODO time controller add break timer mode
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                timeController.start()
+                breakWindow.close()
+            }
+        }
+    }
 }

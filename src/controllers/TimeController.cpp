@@ -165,7 +165,8 @@ void TimeController::onCurrentProjectMaxWorkTimeChanged(const int maxWorkTime)
 
 void TimeController::startBreak()
 {
-    // TODO implement break
+    pause();
+    emit breakStarted();
 }
 
 void TimeController::onWorkTimerTimeout()

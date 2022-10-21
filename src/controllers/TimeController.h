@@ -44,6 +44,8 @@ signals:
     void runningChanged(const bool running) const;
     void requestSaveWorklog() const;
 
+    void breakStarted() const;
+
 private slots:
     void onWorkTimerTimeout();
     void onRequestSaveWorklog();
