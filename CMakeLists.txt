@@ -123,6 +123,7 @@ qt_add_shaders(Timro "basic_shaders"
 
 set_target_properties(Timro PROPERTIES
     WIN32_EXECUTABLE TRUE
+    MACOSX_BUNDLE ON
 )
 
 target_link_libraries(Timro PRIVATE Qt6::Sql Qt6::Quick Qt6::Core Qt6::Widgets)

@@ -12,10 +12,12 @@ void DirHelper::prepareWorkDirectories()
 {
     QDir dir;
     if (!dir.exists(workDir())) {
-        dir.mkdir(workDir());
+        const bool result = dir.mkdir(workDir());
+        qInfo() << "Creating work dir" << workDir() << result;
     }
     if (!dir.exists(dataDir())) {
-        dir.mkdir(dataDir());
+        const bool result = dir.mkdir(dataDir());
+        qInfo() << "Creating data dir" << dataDir() << result;
     }
 }
 

@@ -68,14 +68,14 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
 int main(int argc, char *argv[])
 {
     using namespace Qt::Literals::StringLiterals;
-    DatabaseProvider::setDefaultDatabaseType(DatabaseProvider::DatabaseType::Sqlite);
-    DirHelper::prepareWorkDirectories();
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(u":/Timro/resources/app_icon.png"_s));
     // TODO add version mumber
     app.setApplicationName(u"Timro"_s);
 
+    DatabaseProvider::setDefaultDatabaseType(DatabaseProvider::DatabaseType::Sqlite);
+    DirHelper::prepareWorkDirectories();
     qInstallMessageHandler(customMessageHandler);
 
     QtSingleApp singleApp;

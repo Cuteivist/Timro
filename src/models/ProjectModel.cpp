@@ -113,6 +113,8 @@ bool ProjectModel::add(const QString &name, const int maxWorkTime)
     if (result) {
         const int id = data(index(rowCount(), 0), IdRole).toInt();
         emit projectAdded(id, name);
+    } else {
+        qWarning() << "Insert projet failed" << name << lastError();
     }
     return result;
 }

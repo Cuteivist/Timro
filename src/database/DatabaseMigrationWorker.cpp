@@ -69,6 +69,7 @@ bool DatabaseMigrationWorker::migrateDatabase(QSqlDatabase database)
             qCritical() << "Failed to update db version!";
             return false;
         }
+        qInfo() << "Successfully applied migration" << (i+1);
     }
     return true;
 }

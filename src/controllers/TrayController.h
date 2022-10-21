@@ -45,6 +45,7 @@ signals:
 
 private:
     bool mIsTrayAvailable;
+    bool mShowingTimeInTrayIcon = false;
     QSystemTrayIcon mTrayIcon;
     QScopedPointer<QMenu> mTrayMenu;
     QActionGroup *mProjectGroup {};

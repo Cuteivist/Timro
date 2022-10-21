@@ -51,7 +51,7 @@ void TrayController::onTrayActivated(QSystemTrayIcon::ActivationReason activatio
 
 void TrayController::onWorkTimeChanged(const int workTime)
 {
-    if (!mTrayIcon.icon().isNull()) {
+    if (!mShowingTimeInTrayIcon) {
         return;
     }
 
@@ -119,12 +119,10 @@ void TrayController::onProjectRenamed(const int projectId, const QString &name)
 
 void TrayController::onRunningChanged(const bool running)
 {
-    if (running) {
-        mTrayIcon.setIcon(QIcon());
-        return;
+    mShowingTimeInTrayIcon = running;
+    if (!running) {
+        mTrayIcon.setIcon(QApplication::windowIcon());
     }
-
-    mTrayIcon.setIcon(QApplication::windowIcon());
 }
 
 void TrayController::init()
