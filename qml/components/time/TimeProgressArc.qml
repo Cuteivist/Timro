@@ -1,8 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
 
-import "../../utils/DrawUtils.js" as DrawUtils
-
 Shape {
     id: arcShape
 
@@ -17,12 +15,11 @@ Shape {
         readonly property int barLineHeight: arcShape.height * 0.05
         readonly property int currentAngle: Math.min(360, arcShape.progress * 360)
 
-        function getFinishLineInnerPoint() {
-            return DrawUtils.rotatePoint(priv.center, priv.currentAngle, Qt.point(priv.center.x, priv.center.y + arcShape.radius - priv.barLineHeight * 0.5))
-        }
+        readonly property point finishLineInnerPoint: finishLinePoint(-priv.barLineHeight * 0.5)
+        readonly property point finishLineOuterPoint: finishLinePoint(priv.barLineHeight * 0.5)
 
-        function getFinishLineOuterPoint() {
-            return DrawUtils.rotatePoint(priv.center, priv.currentAngle, Qt.point(priv.center.x, priv.center.y + arcShape.radius + priv.barLineHeight * 0.5))
+        function finishLinePoint(offset) {
+            return qmlHelper.rotatePoint(priv.center, priv.currentAngle, Qt.point(priv.center.x, priv.center.y + arcShape.radius + offset))
         }
     }
 
@@ -44,13 +41,12 @@ Shape {
             relativeY: priv.barLineHeight
         }
         PathMove {
-            x: priv.getFinishLineInnerPoint().x
-            y: priv.getFinishLineInnerPoint().y
+            x: priv.finishLineInnerPoint.x
+            y: priv.finishLineInnerPoint.y
         }
-
         PathLine {
-            x: priv.getFinishLineOuterPoint().x
-            y: priv.getFinishLineOuterPoint().y
+            x: priv.finishLineOuterPoint.x
+            y: priv.finishLineOuterPoint.y
         }
         PathAngleArc {
             centerX: priv.center.x

@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 import "panels"
 import "pages"
+import "popups"
 
 ApplicationWindow {
     id: mainWindow
@@ -96,11 +97,13 @@ ApplicationWindow {
     Shortcut {
         sequence: "space"
         onActivated: {
-            if (timeController.running) {
+            if (timeController.workTimeRunning) {
                 timeController.pause()
             } else {
                 timeController.start()
             }
         }
     }
+
+    PopupContainer { }
 }

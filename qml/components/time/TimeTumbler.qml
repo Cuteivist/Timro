@@ -1,7 +1,5 @@
 import QtQuick
 
-import "../../utils/TimeUtils.js" as TimeUtils
-
 Row {
     readonly property int selectedHour: hourListView.currentIndex
     readonly property int selectedMinute: minutesListView.currentIndex
@@ -9,8 +7,8 @@ Row {
     readonly property int selectedValueInSeconds: ((selectedHour * 60) + selectedMinute) * 60
 
     function reset(elapsedSeconds) {
-        minutesListView.positionViewAtIndex(TimeUtils.getMinutes(elapsedSeconds), ListView.Center)
-        hourListView.positionViewAtIndex(TimeUtils.getHours(elapsedSeconds), ListView.Center)
+        minutesListView.positionViewAtIndex(qmlHelper.getMinutes(elapsedSeconds), ListView.Center)
+        hourListView.positionViewAtIndex(qmlHelper.getHours(elapsedSeconds), ListView.Center)
     }
 
     TimeNumberSpinner {

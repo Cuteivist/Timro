@@ -4,8 +4,6 @@ import QtQuick.Controls
 import "../components/controls"
 import "../components"
 
-import "../utils/TimeUtils.js" as TimeUtils
-
 BasePanel {
     id: panel
 
@@ -47,7 +45,7 @@ BasePanel {
             const maxWorkTime = timeController.maxWorkTime
             const workTime = timeController.workTime
             const percent = Math.round((workTime / maxWorkTime) * 100)
-            return String("%1  [%2%]").arg(TimeUtils.toString(workTime)).arg(percent)
+            return String("%1  [%2%]").arg(qmlHelper.secondsToTimeString(workTime)).arg(percent)
         }
         height: projectComboBox.height * 0.9
         anchors {

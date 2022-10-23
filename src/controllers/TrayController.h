@@ -28,7 +28,7 @@ public slots:
     void onProjectRenamed(const int projectId, const QString &name);
 
 private slots:
-    void onRunningChanged(const bool running);
+    void onWorkTimeRunningChanged(const bool running);
 
 signals:
     // outgoing
@@ -41,7 +41,7 @@ signals:
     void beforeQuit() const;
 
     // incoming
-    void runningChanged(const bool running) const;
+    void workTimeRunningChanged(const bool running) const;
 
 private:
     bool mIsTrayAvailable;
