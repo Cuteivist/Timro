@@ -36,12 +36,12 @@ void TimroCore::connectManagers()
     connect(mProjectController.model(), &ProjectModel::projectRenamed, &mTrayController, &TrayController::onProjectRenamed);
 
     // Time
-    connect(&mTimeController, &TimeController::runningChanged, &mTrayController, &TrayController::runningChanged);
+    connect(&mTimeController, &TimeController::workTimeRunningChanged, &mTrayController, &TrayController::workTimeRunningChanged);
     connect(&mTimeController, &TimeController::workTimeChanged, &mTrayController, &TrayController::onWorkTimeChanged);
 
     // Tray
     connect(&mTrayController, &TrayController::toggleStartPause, this, [this]() {
-        if (mTimeController.running()) {
+        if (mTimeController.workTimeRunning()) {
             mTimeController.pause();
         } else {
             mTimeController.start();
@@ -57,6 +57,7 @@ void TimroCore::initManagers()
     mEngine.rootContext()->setContextProperty(u"projectController"_s, &mProjectController);
     mEngine.rootContext()->setContextProperty(u"timeController"_s, &mTimeController);
     mEngine.rootContext()->setContextProperty(u"trayController"_s, &mTrayController);
+    mEngine.rootContext()->setContextProperty(u"qmlHelper"_s, &mQmlHelper);
 
     // Time controller need to be initialized first
     mTimeController.init();

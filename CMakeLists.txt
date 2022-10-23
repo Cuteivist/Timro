@@ -32,6 +32,7 @@ set(PROJECT_HEADERS
     src/models/SqlModel.h
     src/models/ProjectModel.h
     src/QtSingleApp.h
+    src/helpers/QmlHelper.h
 )
 
 set(PROJECT_SOURCES
@@ -49,6 +50,7 @@ set(PROJECT_SOURCES
     src/models/SqlModel.cpp
     src/models/ProjectModel.cpp
     src/QtSingleApp.cpp
+    src/helpers/QmlHelper.cpp
 )
 
 qt_add_executable(Timro
@@ -74,6 +76,8 @@ qt_add_qml_module(Timro
         qml/pages/ProjectListPage.qml
         qml/popups/BaseConfirmPopup.qml
         qml/popups/TimeTumblerPopup.qml
+        qml/popups/PopupContainer.qml
+        qml/popups/BreakWindow.qml
         qml/components/AutoSizeText.qml
         qml/components/panel/PanelTitle.qml
         qml/components/time/TimeDisplay.qml
@@ -85,18 +89,19 @@ qt_add_qml_module(Timro
         qml/components/controls/RotatingButton.qml
         qml/components/controls/ImageButton.qml
         qml/components/controls/BaseButton.qml
+        qml/components/controls/TextButton.qml
         qml/components/controls/BaseComboBox.qml
         qml/components/controls/MenuButton.qml
+        qml/components/controls/DialogDragMouseArea.qml
         qml/components/delegates/PanelListDelegate.qml
         qml/components/effects/RotatingShadowEffect.qml
         qml/components/effects/GradientEffect.qml
         qml/utils/ModelUtils.js
-        qml/utils/TimeUtils.js
-        qml/utils/DrawUtils.js
     RESOURCES
         resources/button/time/play.png
         resources/button/time/pause.png
         resources/button/time/stop.png
+        resources/button/time/clock.png
         resources/button/edit.png
         resources/button/check.png
         resources/button/reset.png

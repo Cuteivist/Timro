@@ -117,7 +117,7 @@ void TrayController::onProjectRenamed(const int projectId, const QString &name)
     }
 }
 
-void TrayController::onRunningChanged(const bool running)
+void TrayController::onWorkTimeRunningChanged(const bool running)
 {
     mShowingTimeInTrayIcon = running;
     if (!running) {
@@ -135,7 +135,7 @@ void TrayController::init()
     mTrayIcon.setIcon(QApplication::windowIcon());
 
     connect(&mTrayIcon, &QSystemTrayIcon::activated, this, &TrayController::onTrayActivated);
-    connect(this, &TrayController::runningChanged, this, &TrayController::onRunningChanged);
+    connect(this, &TrayController::workTimeRunningChanged, this, &TrayController::onWorkTimeRunningChanged);
 
     // TODO add connects to update tooltip
 
@@ -155,13 +155,13 @@ void TrayController::initMenu()
 
     action = mTrayMenu->addAction(tr("Start"));
     connect(action, &QAction::triggered, this, &TrayController::toggleStartPause);
-    connect(this, &TrayController::runningChanged, this, [action](const bool running) {
+    connect(this, &TrayController::workTimeRunningChanged, this, [action](const bool running) {
         action->setText(running ? tr("Pause") : tr("Start"));
     });
 
     action = mTrayMenu->addAction(tr("Start break"));
     connect(action, &QAction::triggered, this, &TrayController::startBreak);
-    connect(this, &TrayController::runningChanged, action, &QAction::setEnabled);
+    connect(this, &TrayController::workTimeRunningChanged, action, &QAction::setEnabled);
     // TODO disable option if break is running
 
     mTrayMenu->addSeparator();

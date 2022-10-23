@@ -15,6 +15,11 @@ TimeController::TimeController(QObject *parent)
     mWorkTimer.setTimerType(Qt::PreciseTimer);
     mWorkTimer.setInterval(1000);
     connect(&mWorkTimer, &QTimer::timeout, this, &TimeController::onWorkTimerTimeout);
+
+    mBreakTimer.setTimerType(Qt::PreciseTimer);
+    mBreakTimer.setInterval(1000);
+    connect(&mBreakTimer, &QTimer::timeout, this, &TimeController::onBreakTimerTimeout);
+
     connect(this, &TimeController::requestSaveWorklog, this, &TimeController::onRequestSaveWorklog);
 }
 
@@ -30,6 +35,9 @@ void TimeController::init()
 
 void TimeController::start()
 {
+    mBreakTimer.stop();
+    setBreakTime(0);
+
     if (mCurrentProjectId < 0) {
         qWarning() << "Trying to run timer for not existing project";
         // TODO show warning display
@@ -43,7 +51,8 @@ void TimeController::start()
         worker.insert(u"work_session"_s, values);
         mCurrentWorkSessionId = worker.lastInsertId();
     }
-    if (mWorkTimer.isActive()) {
+
+    if (workTimeRunning()) {
         return;
     }
 
@@ -63,17 +72,17 @@ void TimeController::start()
     }
 
     mWorkTimer.start();
-    emit runningChanged(true);
+    emit workTimeRunningChanged(true);
 }
 
 void TimeController::pause()
 {
-    if (!mWorkTimer.isActive()) {
+    if (!workTimeRunning()) {
         return;
     }
     saveWorkTimeToWorklog();
     mWorkTimer.stop();
-    emit runningChanged(false);
+    emit workTimeRunningChanged(false);
 }
 
 void TimeController::reset()
@@ -130,12 +139,12 @@ void TimeController::setMaxWorkTime(const int time)
     emit maxWorkTimeChanged(mMaxWorkTime);
 }
 
-bool TimeController::running() const
+bool TimeController::workTimeRunning() const
 {
     return mWorkTimer.isActive();
 }
 
-void TimeController::setRunning(const bool running)
+void TimeController::setWorkTimeRunning(const bool running)
 {
     if (running) {
         start();
@@ -144,13 +153,24 @@ void TimeController::setRunning(const bool running)
     }
 }
 
+int TimeController::breakTime() const
+{
+    return mBreakTime;
+}
+
+void TimeController::setBreakTime(const int time)
+{
+    mBreakTime = time;
+    emit breakTimeChanged(mBreakTime);
+}
+
 void TimeController::onCurrentProjectChanged(const int projectId, const int maxWorkTime)
 {
     if (projectId < 0) {
         qWarning() << "Invalid project id";
         return;
     }
-    if (running()) {
+    if (workTimeRunning()) {
         saveWorkTimeToWorklog();
     }
     mCurrentProjectId = projectId;
@@ -165,6 +185,8 @@ void TimeController::onCurrentProjectMaxWorkTimeChanged(const int maxWorkTime)
 
 void TimeController::startBreak()
 {
+    setBreakTime(0);
+    mBreakTimer.start();
     pause();
     emit breakStarted();
 }
@@ -178,10 +200,15 @@ void TimeController::onWorkTimerTimeout()
     }
 }
 
+void TimeController::onBreakTimerTimeout()
+{
+    setBreakTime(mBreakTime + 1);
+}
+
 void TimeController::onRequestSaveWorklog()
 {
     // If it is not running that means it is already saved
-    if (!running()) {
+    if (!workTimeRunning()) {
         return;
     }
     saveWorkTimeToWorklog();

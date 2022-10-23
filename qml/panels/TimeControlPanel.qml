@@ -7,11 +7,23 @@ import "../components/time"
 Row {
     id: controlPanel
     height: playPauseButton.height * 0.85
+
+    Item {
+        width: breakButton.width
+        height: breakButton.height
+        RotatingButton {
+            id: breakButton
+            source: "qrc:/Timro/resources/button/time/clock.png"
+            visible: timeController.workTimeRunning
+            onClicked: timeController.startBreak()
+        }
+    }
+
     RotatingButton {
         id: playPauseButton
-        source: timeController.running ? "qrc:/Timro/resources/button/time/pause.png" : "qrc:/Timro/resources/button/time/play.png"
+        source: timeController.workTimeRunning ? "qrc:/Timro/resources/button/time/pause.png" : "qrc:/Timro/resources/button/time/play.png"
         onClicked: {
-            if (timeController.running) {
+            if (timeController.workTimeRunning) {
                 timeController.pause()
             } else {
                 timeController.start()
@@ -25,7 +37,7 @@ Row {
         RotatingButton {
             id: stopButton
             source: "qrc:/Timro/resources/button/time/stop.png"
-            visible: timeController.running
+            visible: timeController.workTimeRunning
             onClicked: timeController.reset()
         }
     }

@@ -4,6 +4,8 @@ import QtQuick.Controls
 ImageButton {
     id: button
 
+    property bool animationRunning: button.hovered
+
     width: 64
     height: 64
     layer.enabled: true
@@ -22,7 +24,7 @@ ImageButton {
             duration: 100000
             loops: Animation.Infinite
             running: true
-            paused: !button.hovered
+            paused: !animationRunning
         }
 
         fragmentShader: "qrc:/resources/shaders/buttonRotate.frag.qsb"

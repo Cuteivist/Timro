@@ -6,8 +6,6 @@ import "../components/panel"
 import "../components/controls"
 import "../components/delegates"
 
-import "../utils/TimeUtils.js" as TimeUtils
-
 ListPanel {
     id: panel
 
@@ -113,7 +111,7 @@ ListPanel {
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
-                text: TimeUtils.toString(maxWorkTime)
+                text: qmlHelper.secondsToTimeString(maxWorkTime)
                 font.pixelSize: 18
             }
         }
@@ -139,7 +137,7 @@ ListPanel {
             Text {
                 anchors.fill: parent
                 anchors.leftMargin: 5
-                text: TimeUtils.toString(selectedMaxWorkTime)
+                text: qmlHelper.secondsToTimeString(selectedMaxWorkTime)
             }
             MouseArea {
                 anchors.fill: parent
