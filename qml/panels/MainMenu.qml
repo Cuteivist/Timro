@@ -1,14 +1,14 @@
 import QtQuick
 
-import "../components/controls"
+import Timro
 
 Rectangle {
     id: mainMenu
 
-    width: 36
-    color: "#1981A1"
+    width: iconSize + 4
+    color: Style.mainMenu.backgroundColor
 
-    readonly property int iconSize: 32
+    readonly property int iconSize: Style.mainMenu.iconSize
 
     signal projectListMenuClicked()
     signal homeMenuClicked()

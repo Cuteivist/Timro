@@ -1,5 +1,7 @@
 import QtQuick
 
+import Timro
+
 Text {
     id: timeDisplay
 
@@ -8,5 +10,5 @@ Text {
     verticalAlignment: Text.AlignVCenter
     horizontalAlignment: Text.AlignHCenter
     text: qmlHelper.secondsToTimeString(value)
-    font.pixelSize: 20
+    font.pixelSize: Style.timeDisplay.textFontSize
 }

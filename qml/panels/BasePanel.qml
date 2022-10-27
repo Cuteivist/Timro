@@ -1,6 +1,8 @@
 import QtQuick
 
+import Timro
+
 Rectangle {
-    color: "#4C8EA8C1"
-    radius: 20
+    color: Style.panel.backgroundColor
+    radius: Style.panel.radius
 }

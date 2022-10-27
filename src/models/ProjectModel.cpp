@@ -9,8 +9,6 @@ using namespace Qt::Literals::StringLiterals;
 ProjectModel::ProjectModel(QObject *parent)
     : SqlModel(parent)
 {
-    init();
-    setFilter(u"deleted=0"_s);
 }
 
 ProjectModel::~ProjectModel()
@@ -42,6 +40,14 @@ QHash<int, QByteArray> ProjectModel::roleNames() const
     return roleNames;
 }
 
+void ProjectModel::init()
+{
+    setTable(u"project"_s);
+    setEditStrategy(QSqlTableModel::OnFieldChange);
+    select();
+    setFilter(u"deleted=0"_s);
+}
+
 bool ProjectModel::changeCurrentProject(const int id)
 {
     QModelIndex modelIndex = modelIndexFromId(id);
@@ -61,6 +67,19 @@ bool ProjectModel::changeCurrentProject(const int id)
 
     setEditStrategy(QSqlTableModel::OnFieldChange);
     return result;
+}
+
+void ProjectModel::resetCurrentProject()
+{
+    setEditStrategy(QSqlTableModel::OnManualSubmit);
+    for (int i = 0 ; i < rowCount() ; ++i) {
+        setData(index(i, 0), false, IsCurrentRole);
+    }
+    const bool result = submitAll();
+    if (!result) {
+        revertAll();
+    }
+    setEditStrategy(QSqlTableModel::OnFieldChange);
 }
 
 int ProjectModel::currentProjectId()
@@ -111,7 +130,7 @@ bool ProjectModel::add(const QString &name, const int maxWorkTime)
     newRecord.remove(roleToColumnIndex(IdRole));
     const bool result = insertNewRecord(newRecord);
     if (result) {
-        const int id = data(index(rowCount(), 0), IdRole).toInt();
+        const int id = data(index(rowCount() - 1, 0), IdRole).toInt();
         emit projectAdded(id, name);
     } else {
         qWarning() << "Insert projet failed" << name << lastError();
@@ -168,11 +187,6 @@ int ProjectModel::maxWorkTime(const int id) const
 {
     QModelIndex modelIndex = modelIndexFromId(id);
     return data(index(modelIndex.row(), 0), MaxWorkTimeRole).toInt();
-}
-
-QString ProjectModel::table() const
-{
-    return u"project"_s;
 }
 
 QModelIndex ProjectModel::modelIndexFromId(const int id) const

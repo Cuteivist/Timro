@@ -4,16 +4,15 @@ import QtQuick.Controls
 ImageButton {
     id: button
 
-    property bool animationRunning: button.hovered
+    property bool animationRunning: button.hovered && enabled
 
     width: 64
     height: 64
     layer.enabled: true
     layer.effect: ShaderEffect {
         id: shader
-        readonly property real translationValue: (Math.PI / 180)
         property int rotationAngle: 0.0
-        property real rotation: rotationAngle * translationValue
+        property real rotation: qmlHelper.degreeToRadians(rotationAngle)
 
         PropertyAnimation {
             id: rotationAnimation

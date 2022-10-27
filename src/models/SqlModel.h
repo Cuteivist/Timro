@@ -15,11 +15,7 @@ public:
     static int roleToColumnIndex(const int role);
 
 protected:
-    void init();
-
-    bool insertNewRecord(const QSqlRecord &record, const int row = -1);
-
-    virtual QString table() const = 0;
+    bool insertNewRecord(const QSqlRecord &record, const int row = -1);    
 };
 
 #endif // SQLMODEL_H

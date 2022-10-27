@@ -2,9 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import "../components/panel"
-import "../components/controls"
-import "../components/delegates"
+import Timro
 
 ListPanel {
     id: panel
@@ -106,13 +104,13 @@ ListPanel {
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: name
-                font.pixelSize: 18
+                font.pixelSize: Style.listDelegate.fontSize
             }
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: qmlHelper.secondsToTimeString(maxWorkTime)
-                font.pixelSize: 18
+                font.pixelSize: Style.listDelegate.fontSize
             }
         }
     }
@@ -131,7 +129,7 @@ ListPanel {
             text: qsTr("Work time:")
         },
         Rectangle {
-            color: "#A0FFFFFF"
+            color: Style.editField.inputFieldColor
             Layout.preferredHeight: nameInput.height
             Layout.fillWidth: true
             Text {

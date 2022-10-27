@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Shapes
 
-import "../effects"
+import Timro
 
 Item {
     id: progressCircle
@@ -16,7 +16,7 @@ Item {
         anchors.fill: parent
         ShapePath {
             fillColor: "transparent"
-            strokeColor: "#80808080"
+            strokeColor: Style.timeDisplay.backgroundCircleColor
             strokeWidth: 2
             capStyle: ShapePath.FlatCap
 
@@ -61,10 +61,10 @@ Item {
         radius: timeInnerArc.radiusX * 1.07
         visible: editMode
         progress: editValue / maxValue
-        color: "#FA0942"
+        color: Style.timeDisplay.editCircleColor
         layer.effect: RotatingShadowEffect {
             shadowCount: 10
-            shadowColor: "#FF9DA3"
+            shadowColor: Style.timeDisplay.editCircleAnimationColor
         }
     }
 }

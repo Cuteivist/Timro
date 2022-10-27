@@ -1,4 +1,6 @@
-import QtQuick 2.15
+import QtQuick
+
+import Timro
 
 Rectangle {
     id: delegate
@@ -9,11 +11,11 @@ Rectangle {
     signal clicked()
     signal pressAndHold()
 
-    height: 40
-    radius: 5
-    color: "#80FFFFFF"
-    border.width: 1
-    border.color: "black"
+    height: Style.listDelegate.height
+    radius: Style.listDelegate.radius
+    color: Style.listDelegate.backgroundColor
+    border.width: Style.listDelegate.borderWidth
+    border.color: Style.listDelegate.borderColor
 
     Item {
         id: contentItem

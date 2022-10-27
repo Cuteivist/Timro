@@ -1,7 +1,6 @@
 import QtQuick
 
-import "../components/controls"
-import "../components/time"
+import Timro
 
 Window {
     id: window
@@ -9,7 +8,7 @@ Window {
     modality: Qt.ApplicationModal
 
     x: (Screen.width - width) * 0.5
-    y: Screen.height/2 - height/2
+    y: (Screen.height - height) * 0.5
 
     title: qsTr("Taking a break!")
 
@@ -18,7 +17,7 @@ Window {
 
     Rectangle {
         anchors.fill: parent
-        color: "#DDD4E6"
+        color: Style.dialog.backgroundColor
         DialogDragMouseArea {
             window: window
         }
@@ -32,7 +31,7 @@ Window {
         }
         text: title
 
-        font.pixelSize: 20 // TODO use style
+        font.pixelSize: Style.dialog.titleFontSize
     }
 
     RotatingButton {
@@ -54,7 +53,7 @@ Window {
         width: 100
         height: 50
         value: timeController.breakTime
-        font.pixelSize: 30 // TODO use style
+        font.pixelSize: Style.dialog.contentItemFontSize
     }
 
     TextButton {
@@ -65,7 +64,7 @@ Window {
         }
 
         text: qsTr("Finish")
-        font.pixelSize: 20 // TODO use style
+        font.pixelSize: Style.dialog.buttonFontSize
         onClicked: {
             timeController.start()
             window.hide()

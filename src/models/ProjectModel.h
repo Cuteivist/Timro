@@ -22,7 +22,10 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     QHash<int, QByteArray> roleNames() const override;
 
+    void init();
+
     bool changeCurrentProject(const int id);
+    void resetCurrentProject();
     int currentProjectId();
 
     int lastCreatedProjectId();
@@ -42,9 +45,6 @@ signals:
     void projectAdded(const int projectId, const QString &name) const;
     void projectRemoved(const int projectId) const;
     void projectRenamed(const int projectId, const QString &name) const;
-
-protected:
-    QString table() const override;
 
 private:
     QModelIndex modelIndexFromId(const int id) const;  

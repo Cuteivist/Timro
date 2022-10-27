@@ -38,6 +38,10 @@ void TimroCore::connectManagers()
     // Time
     connect(&mTimeController, &TimeController::workTimeRunningChanged, &mTrayController, &TrayController::workTimeRunningChanged);
     connect(&mTimeController, &TimeController::workTimeChanged, &mTrayController, &TrayController::onWorkTimeChanged);
+    connect(&mTimeController, &TimeController::breakStarted, &mTrayController, &TrayController::breakStarted);
+    connect(&mTimeController, &TimeController::breakFinished, &mTrayController, &TrayController::breakFinished);
+    connect(&mTimeController, &TimeController::workTimeRunningChanged, mProjectController.workHistoryModel(), &ProjectWorkHistoryModel::onWorkTimeRunningChanged);
+    connect(&mTimeController, &TimeController::sessionFinished, mProjectController.workHistoryModel(), &ProjectWorkHistoryModel::refresh);
 
     // Tray
     connect(&mTrayController, &TrayController::toggleStartPause, this, [this]() {

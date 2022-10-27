@@ -13,6 +13,7 @@ public:
 
     // Drawing
     Q_INVOKABLE QPointF rotatePoint(const QPointF &center, const double angle, const QPointF &point) const;
+    Q_INVOKABLE float degreeToRadians(const float degree) const;
 
     // Time
     Q_INVOKABLE int getMinutes(const int seconds) const;

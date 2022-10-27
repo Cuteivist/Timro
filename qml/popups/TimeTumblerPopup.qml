@@ -1,9 +1,10 @@
 import QtQuick
 
-import "../components/time"
-import "../components"
+import Timro
 
 BaseConfirmPopup {
+    height: 275
+
     readonly property int selectedValue: timeTumbler.selectedValueInSeconds
 
     function show(time, text) {
@@ -12,10 +13,16 @@ BaseConfirmPopup {
         open()
     }
 
-    AutoSizeText {
+    Text {
         id: headerText
-        horizontalAlignment: Qt.AlignHCenter
-        width: parent.width
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            margins: 5
+        }
+        font.pixelSize: Style.dialog.titleFontSize
+        wrapMode: Text.WordWrap
         height: parent.height * 0.15
     }
 
@@ -23,6 +30,6 @@ BaseConfirmPopup {
         id: timeTumbler
         anchors.centerIn: parent
         width: parent.width * 0.45
-        height: parent.height * 0.6
+        height: 150
     }
 }

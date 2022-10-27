@@ -16,7 +16,7 @@ SqlModel::~SqlModel()
 
 QVariant SqlModel::data(const QModelIndex &index, int role) const
 {
-    if (role < Qt::UserRole) {
+    if (role < Qt::UserRole || !index.isValid()) {
         return QSqlTableModel::data(index, role);
     }
     QModelIndex modelIndex = this->index(index.row(), roleToColumnIndex(role));
@@ -35,13 +35,6 @@ bool SqlModel::setData(const QModelIndex &index, const QVariant &value, int role
 int SqlModel::roleToColumnIndex(const int role)
 {
     return role - (Qt::UserRole + 1);
-}
-
-void SqlModel::init()
-{
-    setTable(table());
-    setEditStrategy(QSqlTableModel::OnFieldChange);
-    select();
 }
 
 bool SqlModel::insertNewRecord(const QSqlRecord &record, const int row)

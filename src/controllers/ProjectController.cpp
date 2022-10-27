@@ -11,6 +11,9 @@ ProjectController::ProjectController(QObject *parent)
 
 void ProjectController::init()
 {
+    mProjectModel.init();
+    mProjectWorkHistoryModel.init();
+
     mCurrentProjectId = mProjectModel.currentProjectId();
     if (mCurrentProjectId > 0) {
         emit currentProjectChanged(mCurrentProjectId, mProjectModel.maxWorkTime(mCurrentProjectId));
@@ -20,11 +23,18 @@ void ProjectController::init()
 
     connect(&mProjectModel, &ProjectModel::projectRemoved, this, &ProjectController::onProjectRemoved);
     connect(&mProjectModel, &ProjectModel::projectAdded, this, &ProjectController::onProjectAdded);
+
+    connect(&mProjectModel, &ProjectModel::currentProjectMaxWorkTimeChanged, &mProjectWorkHistoryModel, &ProjectWorkHistoryModel::refresh);
 }
 
 ProjectModel *ProjectController::model()
 {
     return &mProjectModel;
+}
+
+ProjectWorkHistoryModel *ProjectController::workHistoryModel()
+{
+    return &mProjectWorkHistoryModel;
 }
 
 int ProjectController::currentProjectId() const
@@ -37,12 +47,15 @@ void ProjectController::setCurrentProjectId(const int projectId)
     if (projectId == mCurrentProjectId) {
         return;
     }
-    if (!mProjectModel.changeCurrentProject(projectId)) {
+    if (projectId < 0) {
+        mProjectModel.resetCurrentProject();
+    } else if (!mProjectModel.changeCurrentProject(projectId)) {
         qWarning() << "Unable to change current project!";
     }
     mCurrentProjectId = projectId;
     emit currentProjectIdChanged(mCurrentProjectId);
     emit currentProjectChanged(mCurrentProjectId, mProjectModel.maxWorkTime(mCurrentProjectId));
+    mProjectWorkHistoryModel.refresh();
 }
 
 void ProjectController::onProjectRemoved(const int projectId)

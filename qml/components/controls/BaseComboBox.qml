@@ -1,34 +1,82 @@
 import QtQuick
 import QtQuick.Controls
 
-import ".."
+import Timro
 
 ComboBox {
     id: comboBox
 
     property real textOpacity: 1.0
+    property bool autoAdjustPopupWidth: false
 
-    contentItem: Item {
-        width: comboBox.width
-        height: comboBox.height
-        AutoSizeText {
-            anchors.fill: parent
-            verticalAlignment: Qt.AlignVCenter
-            text: comboBox.currentText
-            opacity: textOpacity
+    QtObject {
+        id: priv
+        property real popupWidth: comboBox.width
+    }
+
+    function refreshPopupWidth() {
+        if (!autoAdjustPopupWidth) {
+            return
         }
+
+        comboBoxFontMetrics.font = comboBox.font
+        let longestWordLength = 0
+        let longestWords = []
+        for (var i = 0 ; i < count ; i++) {
+            const name = comboBox.textAt(i)
+            if (name.length > longestWordLength) {
+                longestWordLength = name.length
+                longestWords = [ name ]
+            } else if (name.length === longestWordLength) {
+                longestWords.push(name)
+            }
+        }
+
+        // It is possible to get more than one string with same letter count,
+        // but with different painted width
+        let longestWordWidth = 0
+        for (var i = 0 ; i < longestWords.length ; i++) {
+            const textRect = comboBoxFontMetrics.boundingRect(longestWords[i])
+            if (textRect.width > longestWordWidth) {
+                longestWordWidth = textRect.width
+            }
+        }
+        priv.popupWidth = Math.min(mainWindow.width, longestWordWidth)
+    }
+
+    FontMetrics {
+        id: comboBoxFontMetrics
+    }
+
+    onCountChanged: refreshPopupWidth()
+    onModelChanged: refreshPopupWidth()
+    onFontChanged: refreshPopupWidth()
+
+    font.pixelSize: Style.comboBox.defaultFontSize
+    contentItem: Text {
+        text: comboBox.currentText
+        rightPadding: comboBox.indicator.width + comboBox.spacing
+        elide: Text.ElideRight
+        opacity: textOpacity
+        font: comboBox.font
+    }
+    indicator: Image {
+        x: comboBox.width - width - comboBox.rightPadding
+        y: (comboBox.height - height) * 0.5
+        width: Style.comboBox.indicatorSize
+        height: width
+        source: "qrc:/Timro/resources/button/down.png"
+        rotation: comboBox.down ? 180 : 0
     }
     background: Item {}
     popup: Popup {
-        y: -comboBox.height / 2
-        width: comboBox.width
+        width: Math.max(comboBox.width, priv.popupWidth)
         implicitHeight: contentItem.implicitHeight
         padding: 0
 
         contentItem: ListView {
             clip: true
             boundsBehavior: Flickable.StopAtBounds
-            width: comboBox.width
             implicitHeight: contentHeight
             model: comboBox.delegateModel
             currentIndex: highlightedIndex
@@ -44,18 +92,18 @@ ComboBox {
                 left: parent.left
                 leftMargin: 5
             }
-            width: 10
+            width: Style.comboBox.selectedIndicatorSize
             height: width
             radius: width * 0.5
-            color: "#1981A1"
+            color: Style.comboBox.selectedIndicatorColor
             visible: currentIndex === index
         }
 
-        leftPadding: 20
+        leftPadding: indicator.width * 2
         hoverEnabled: true
         width: ListView.view.width
         text: comboBox.textAt(index)
         highlighted: comboBox.highlightedIndex === index
-        palette.highlight: "#600000FF"
+        palette.highlight: Style.comboBox.highlightColor
     }
 }

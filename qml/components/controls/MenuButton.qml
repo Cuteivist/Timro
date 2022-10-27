@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
+import Timro
+
 Item {
     id: menuButton
     property alias source: button.source
@@ -16,8 +18,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: active ? "white" : "transparent"
-        opacity: 0.3
+        color: active ? Style.mainMenu.activeColor : "transparent"
     }
 
     ColumnLayout {
@@ -40,7 +41,7 @@ Item {
             Layout.fillWidth: true
             Layout.maximumHeight: 1
             Layout.minimumHeight: 1
-            color: "white"
+            color: Style.mainMenu.separatorColor
         }
     }
 }

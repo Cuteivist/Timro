@@ -9,7 +9,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(Timro VERSION 0.1 LANGUAGES CXX)
+include(appInfo.cmake) # application details
+
+project(Timro VERSION ${APP_VERSION} LANGUAGES CXX)
 
 find_package(Qt6 6.4 COMPONENTS REQUIRED Core Quick Sql Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Core ShaderTools Sql Widgets)
@@ -31,6 +33,7 @@ set(PROJECT_HEADERS
     src/sql/SqlWorker.h
     src/models/SqlModel.h
     src/models/ProjectModel.h
+    src/models/ProjectWorkHistoryModel.h
     src/QtSingleApp.h
     src/helpers/QmlHelper.h
 )
@@ -49,72 +52,86 @@ set(PROJECT_SOURCES
     src/sql/SqlWorker.cpp
     src/models/SqlModel.cpp
     src/models/ProjectModel.cpp
+    src/models/ProjectWorkHistoryModel.cpp
     src/QtSingleApp.cpp
     src/helpers/QmlHelper.cpp
 )
 
-qt_add_executable(Timro
-    ${PROJECT_HEADERS}
-    ${PROJECT_SOURCES}
+set(QML_SINGLETON_FILES
+    qml/style/Style.qml
 )
+
+set(QML_FILES
+    qml/main.qml
+    qml/panels/BasePanel.qml
+    qml/panels/TimeControlPanel.qml
+    qml/panels/WorkHistoryPanel.qml
+    qml/panels/TimePanel.qml
+    qml/panels/MainMenu.qml
+    qml/panels/ProjectListPanel.qml
+    qml/panels/TaskListPanel.qml
+    qml/panels/ListPanel.qml
+    qml/pages/BasePage.qml
+    qml/pages/HomePage.qml
+    qml/pages/ProjectListPage.qml
+    qml/popups/BaseConfirmPopup.qml
+    qml/popups/TimeTumblerPopup.qml
+    qml/popups/PopupContainer.qml
+    qml/popups/BreakWindow.qml
+    qml/components/panel/PanelTitle.qml
+    qml/components/time/TimeDisplay.qml
+    qml/components/time/TimeEditDisplay.qml
+    qml/components/time/TimeProgressCircle.qml
+    qml/components/time/TimeNumberSpinner.qml
+    qml/components/time/TimeProgressArc.qml
+    qml/components/time/TimeTumbler.qml
+    qml/components/controls/RotatingButton.qml
+    qml/components/controls/ImageButton.qml
+    qml/components/controls/BaseButton.qml
+    qml/components/controls/TextButton.qml
+    qml/components/controls/BaseComboBox.qml
+    qml/components/controls/MenuButton.qml
+    qml/components/controls/DialogDragMouseArea.qml
+    qml/components/controls/ProjectSelectionComboBox.qml
+    qml/components/delegates/PanelListDelegate.qml
+    qml/components/effects/RotatingShadowEffect.qml
+    qml/components/effects/GradientEffect.qml
+    qml/utils/ModelUtils.js
+    ${QML_SINGLETON_FILES}
+)
+
+set(RESOURCE_FILES
+    resources/button/time/play.png
+    resources/button/time/pause.png
+    resources/button/time/stop.png
+    resources/button/time/clock.png
+    resources/button/edit.png
+    resources/button/check.png
+    resources/button/reset.png
+    resources/button/cancel.png
+    resources/button/select_all.png
+    resources/button/add.png
+    resources/button/trash.png
+    resources/button/down.png
+    resources/menu/menu_show.png
+    resources/menu/settings.png
+    resources/menu/task.png
+    resources/menu/home.png
+    resources/selected.png
+    resources/app_icon.png
+)
+
+set_source_files_properties(${QML_SINGLETON_FILES} PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+)
+
+qt_add_executable(Timro ${PROJECT_HEADERS} ${PROJECT_SOURCES})
 
 qt_add_qml_module(Timro
     URI Timro
     VERSION 1.0
-    QML_FILES
-        qml/main.qml
-        qml/panels/BasePanel.qml
-        qml/panels/TimeControlPanel.qml
-        qml/panels/ProjectPanel.qml
-        qml/panels/TimePanel.qml
-        qml/panels/MainMenu.qml
-        qml/panels/ProjectListPanel.qml
-        qml/panels/TaskListPanel.qml
-        qml/panels/ListPanel.qml
-        qml/pages/BasePage.qml
-        qml/pages/HomePage.qml
-        qml/pages/ProjectListPage.qml
-        qml/popups/BaseConfirmPopup.qml
-        qml/popups/TimeTumblerPopup.qml
-        qml/popups/PopupContainer.qml
-        qml/popups/BreakWindow.qml
-        qml/components/AutoSizeText.qml
-        qml/components/panel/PanelTitle.qml
-        qml/components/time/TimeDisplay.qml
-        qml/components/time/TimeEditDisplay.qml
-        qml/components/time/TimeProgressCircle.qml
-        qml/components/time/TimeNumberSpinner.qml
-        qml/components/time/TimeProgressArc.qml
-        qml/components/time/TimeTumbler.qml
-        qml/components/controls/RotatingButton.qml
-        qml/components/controls/ImageButton.qml
-        qml/components/controls/BaseButton.qml
-        qml/components/controls/TextButton.qml
-        qml/components/controls/BaseComboBox.qml
-        qml/components/controls/MenuButton.qml
-        qml/components/controls/DialogDragMouseArea.qml
-        qml/components/delegates/PanelListDelegate.qml
-        qml/components/effects/RotatingShadowEffect.qml
-        qml/components/effects/GradientEffect.qml
-        qml/utils/ModelUtils.js
-    RESOURCES
-        resources/button/time/play.png
-        resources/button/time/pause.png
-        resources/button/time/stop.png
-        resources/button/time/clock.png
-        resources/button/edit.png
-        resources/button/check.png
-        resources/button/reset.png
-        resources/button/cancel.png
-        resources/button/select_all.png
-        resources/button/add.png
-        resources/button/trash.png
-        resources/menu/menu_show.png
-        resources/menu/settings.png
-        resources/menu/task.png
-        resources/menu/home.png
-        resources/selected.png
-        resources/app_icon.png
+    QML_FILES ${QML_FILES}
+    RESOURCES ${RESOURCE_FILES}
 )
 
 qt_add_shaders(Timro "basic_shaders"

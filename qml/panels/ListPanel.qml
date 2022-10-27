@@ -2,9 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import "../components/panel"
-import "../components/controls"
-import "../components/delegates"
+import Timro
 
 BasePanel {
     property alias editFields: grid.children
@@ -35,7 +33,7 @@ BasePanel {
             left: parent.left
             right: parent.right
         }
-        height: parent.height * 0.1
+        height: Style.panel.titleHeight
 
         PanelTitle {
             height: parent.height
@@ -108,7 +106,7 @@ BasePanel {
         visible: !editViewVisible
         clip: true
         boundsBehavior: ListView.StopAtBounds
-        spacing: 5
+        spacing: Style.listDelegate.listSpacing
     }
 
     Item {

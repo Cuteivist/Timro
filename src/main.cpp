@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(u":/Timro/resources/app_icon.png"_s));
-    // TODO add version mumber
-    app.setApplicationName(u"Timro"_s);
+    app.setApplicationName(APP_NAME);
+    app.setApplicationVersion(APP_VERSION);
 
     DatabaseProvider::setDefaultDatabaseType(DatabaseProvider::DatabaseType::Sqlite);
     DirHelper::prepareWorkDirectories();

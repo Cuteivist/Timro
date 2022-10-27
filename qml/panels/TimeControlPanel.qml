@@ -1,12 +1,13 @@
 import QtQuick
 import QtQuick.Layouts
 
-import "../components/controls"
-import "../components/time"
+import Timro
 
 Row {
     id: controlPanel
     height: playPauseButton.height * 0.85
+
+    enabled: projectController.currentProjectId > 0
 
     Item {
         width: breakButton.width

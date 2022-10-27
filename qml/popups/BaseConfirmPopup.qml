@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-import "../components/controls"
+import Timro
 
 Popup {
     id: popup
@@ -11,41 +11,36 @@ Popup {
 
     modal: true
     closePolicy: Popup.NoAutoClose
-    width: mainWindow.minimumWidth * 0.7
-    height: mainWindow.minimumHeight * 0.4
+    width: 250
+    height: 200
+
+    background: Rectangle {
+        color: Style.dialog.backgroundColor
+    }
 
     Row {
         anchors {
             bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
         }
-        height: parent.height * 0.2
-        spacing: 10
+        spacing: Style.dialog.buttonRowSpacing
 
-        BaseButton {
-            background: Rectangle {
-                color: "transparent"
-                border.width: 1
-            }
-            textHorizontalAlignment: Text.AlignHCenter
-            height: parent.height
-            width: popup.width * 0.25
+        TextButton {
+            id: okButton
             text: qsTr("Ok")
+            width: Math.max(okButton.contentItem.paintedWidth, cancelButton.contentItem.paintedWidth) * 1.2
+            font.pixelSize: Style.dialog.buttonFontSize
             onClicked: {
                 okClicked()
                 close()
             }
         }
 
-        BaseButton {
-            background: Rectangle {
-                color: "transparent"
-                border.width: 1
-            }
+        TextButton {
+            id: cancelButton
             text: qsTr("Cancel")
-            textHorizontalAlignment: Text.AlignHCenter
-            width: popup.width * 0.3
-            height: parent.height
+            width: okButton.width
+            font.pixelSize: Style.dialog.buttonFontSize
             onClicked: {
                 cancelClicked()
                 close()

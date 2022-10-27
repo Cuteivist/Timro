@@ -1,8 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-import "../components/controls"
-import "../components/time"
+import Timro
 
 BasePanel {
     QtObject {
@@ -36,6 +35,17 @@ BasePanel {
         visible: priv.timeEditMode
     }
 
+    ProjectSelectionComboBox {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: timeDisplay.left
+            margins: 5
+            rightMargin: -10
+        }
+        autoAdjustPopupWidth: true
+    }
+
     // Button column
     Column {
         anchors {
@@ -43,8 +53,10 @@ BasePanel {
             right: parent.right
         }
 
+        enabled: projectController.currentProjectId > 0
+
         ImageButton {
-            width: 24
+            width: Style.editIcon.size
             height: width
             source: "qrc:/Timro/resources/button/edit.png"
             visible: !priv.timeEditMode
@@ -52,7 +64,7 @@ BasePanel {
         }
 
         ImageButton {
-            width: 24
+            width: Style.editIcon.size
             height: width
             source: "qrc:/Timro/resources/button/check.png"
             visible: priv.timeEditMode
@@ -63,7 +75,7 @@ BasePanel {
         }
 
         ImageButton {
-            width: 24
+            width: Style.editIcon.size
             height: width
             source: "qrc:/Timro/resources/button/cancel.png"
             visible: priv.timeEditMode
@@ -73,7 +85,7 @@ BasePanel {
         }
 
         ImageButton {
-            width: 24
+            width: Style.editIcon.size
             height: width
             source: "qrc:/Timro/resources/button/reset.png"
             visible: priv.timeEditMode

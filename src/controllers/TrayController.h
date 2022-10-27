@@ -42,6 +42,8 @@ signals:
 
     // incoming
     void workTimeRunningChanged(const bool running) const;
+    void breakStarted() const;
+    void breakFinished() const;
 
 private:
     bool mIsTrayAvailable;

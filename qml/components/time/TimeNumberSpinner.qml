@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import Timro
+
 Tumbler {
     id: root
 
@@ -29,9 +31,7 @@ Tumbler {
         height: root.height / visibleItemCount
         horizontalAlignment: Qt.AlignHCenter
         text: modelData
-        font.pixelSize: 50
-        minimumPixelSize: 10
-        fontSizeMode: Text.Fit
+        font.pixelSize: Style.timeDisplay.editTextFontSize
         scale: Math.abs(Tumbler.displacement) > 0.5 ? 0.7 : 1.0
 
         Behavior on scale {

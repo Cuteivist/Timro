@@ -107,6 +107,7 @@ QStringList DatabaseMigrationWorker::migrations()
                          "task_id INTEGER,"
                          "start_time INTEGER DEFAULT(0),"
                          "work_time INTEGER DEFAULT(0),"
+                         "update_time INTEGER DEFAULT(0),"
                          "FOREIGN KEY(project_id) REFERENCES project(id) ON DELETE CASCADE,"
                          "FOREIGN KEY(task_id) REFERENCES task(id) ON DELETE CASCADE,"
                          "FOREIGN KEY(session_id) REFERENCES work_session(id) ON DELETE CASCADE"

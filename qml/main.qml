@@ -2,9 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import "panels"
-import "pages"
-import "popups"
+import Timro
 
 ApplicationWindow {
     id: mainWindow
@@ -17,7 +15,7 @@ ApplicationWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: "#DDD4E6"
+        color: Style.background.appColor
     }
 
     ColumnLayout {

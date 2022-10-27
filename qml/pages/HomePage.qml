@@ -1,6 +1,6 @@
 import QtQuick
 
-import "../panels"
+import Timro
 
 BasePage {
     Column {
@@ -9,7 +9,7 @@ BasePage {
             right: parent.right
         }
         height: childrenRect.height
-        spacing: 10
+        spacing: Style.panel.panelListSpacing
 
         TimePanel {
             anchors {
@@ -19,12 +19,11 @@ BasePage {
             height: 150
         }
 
-        ProjectPanel {
+        WorkHistoryPanel {
             anchors {
                 left: parent.left
                 right: parent.right
             }
-            height: 80
         }
     }
 }

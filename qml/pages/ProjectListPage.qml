@@ -26,19 +26,6 @@ BasePage {
                 timePopup.show(selectedMaxWorkTime, headerText)
             }
         }
-
-//        TaskListPanel {
-//            onShowTimePopup: {
-//                timePopup.caller = this
-//                let headerText
-//                if (editMode) {
-//                    headerText = qsTr("Select task '%1' max work hours").arg(selectedName)
-//                } else {
-//                    headerText = qsTr("Select task max work hours")
-//                }
-//                timePopup.show(selectedMaxWorkTime, headerText)
-//            }
-//        }
     }
 
     TimeTumblerPopup {

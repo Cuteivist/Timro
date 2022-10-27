@@ -34,6 +34,11 @@ QPointF QmlHelper::rotatePoint(const QPointF &center, const double angle, const 
     return result;
 }
 
+float QmlHelper::degreeToRadians(const float degree) const
+{
+    return qDegreesToRadians(degree);
+}
+
 int QmlHelper::getMinutes(const int seconds) const
 {
     return qFloor(static_cast<float>(seconds) / 60.f) % 60;
@@ -48,7 +53,7 @@ QString QmlHelper::secondsToTimeString(const int seconds) const
 {
     const int fullMinutes = qFloor(seconds / 60);
     const int secs = seconds % 60;
-    const int mins = fullMinutes & 60;
+    const int mins = fullMinutes % 60;
     const int hours = qFloor(fullMinutes / 60);
 
     const QString secondsStr = timeToStringWithLeadingZero(secs);

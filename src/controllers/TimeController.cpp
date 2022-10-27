@@ -31,10 +31,14 @@ void TimeController::init()
     if (!result.isEmpty()) {
         mCurrentWorkSessionId = result.value(u"id"_s).toInt();
     }
+    reloadSessionWorkTime();
 }
 
 void TimeController::start()
 {
+    if (mBreakTimer.isActive()) {
+        emit breakFinished();
+    }
     mBreakTimer.stop();
     setBreakTime(0);
 
@@ -50,26 +54,15 @@ void TimeController::start()
         };
         worker.insert(u"work_session"_s, values);
         mCurrentWorkSessionId = worker.lastInsertId();
+        mCurrentSessionWorkTime = 0;
+        emit currentSessionWorkTimeChanged(mCurrentSessionWorkTime);
     }
 
     if (workTimeRunning()) {
         return;
     }
 
-    SqlWorker worker;
-    const QVariantHash worklogParamters {
-        { u"session_id"_s, mCurrentWorkSessionId },
-        { u"project_id"_s, mCurrentProjectId }
-    };
-    const QVariantHash worklogResults = worker.selectOne(u"SELECT id WHERE session_id=:session_id AND project_id=:project_id"_s, worklogParamters);
-    if (worklogResults.isEmpty()) {
-        const QVariantHash values {
-            { u"project_id"_s, mCurrentProjectId },
-            { u"session_id"_s, mCurrentWorkSessionId },
-            { u"start_time"_s, QDateTime::currentSecsSinceEpoch() }
-        };
-        worker.insert(u"worklog"_s, values);
-    }
+    insertWorkTimeToWorklogIfNotExists();
 
     mWorkTimer.start();
     emit workTimeRunningChanged(true);
@@ -89,6 +82,8 @@ void TimeController::reset()
 {
     pause();
     setWorkTime(0);
+    mCurrentSessionWorkTime = 0;
+    emit currentSessionWorkTimeChanged(mCurrentSessionWorkTime);
     SqlWorker worker;
     const QVariantHash parameters {
         { u"finished"_s, true },
@@ -164,18 +159,33 @@ void TimeController::setBreakTime(const int time)
     emit breakTimeChanged(mBreakTime);
 }
 
+int TimeController::currentSessionWorkTime() const
+{
+    return mCurrentSessionWorkTime;
+}
+
+void TimeController::setCurrentSessionWorkTime(const int)
+{
+    // Cannot be set from outside
+}
+
 void TimeController::onCurrentProjectChanged(const int projectId, const int maxWorkTime)
 {
-    if (projectId < 0) {
-        qWarning() << "Invalid project id";
-        return;
-    }
     if (workTimeRunning()) {
         saveWorkTimeToWorklog();
     }
     mCurrentProjectId = projectId;
+    if (projectId < 0) {
+        setWorkTime(0);
+        setMaxWorkTime(0);
+        return;
+    }
     setWorkTime(projectWorkTime(projectId));
     setMaxWorkTime(maxWorkTime);
+    if (workTimeRunning()) {
+        insertWorkTimeToWorklogIfNotExists();
+        reloadSessionWorkTime();
+    }
 }
 
 void TimeController::onCurrentProjectMaxWorkTimeChanged(const int maxWorkTime)
@@ -194,6 +204,10 @@ void TimeController::startBreak()
 void TimeController::onWorkTimerTimeout()
 {
     setWorkTime(mWorkTime + 1);
+    // Update session time
+    ++mCurrentSessionWorkTime;
+    emit currentSessionWorkTimeChanged(mCurrentSessionWorkTime);
+    // Update save
     ++mTimeSinceLastSave;
     if (mTimeSinceLastSave > SAVE_INTERVAL_SEC) {
         saveWorkTimeToWorklog();
@@ -220,8 +234,46 @@ void TimeController::saveWorkTimeToWorklog()
     const QVariantHash parameters {
         { u"work_time"_s, workTime() },
         { u"project_id"_s, mCurrentProjectId },
-        { u"session_id"_s, mCurrentWorkSessionId }
+        { u"session_id"_s, mCurrentWorkSessionId },
+        { u"update_time"_s, QDateTime::currentSecsSinceEpoch() }
     };
-    worker.update(u"worklog"_s, { u"work_time"_s }, u"project_id=:project_id AND session_id=:session_id"_s, parameters);
+    worker.update(u"worklog"_s, { u"work_time"_s, u"update_time"_s }, u"project_id=:project_id AND session_id=:session_id"_s, parameters);
     mTimeSinceLastSave = 0;
+}
+
+void TimeController::insertWorkTimeToWorklogIfNotExists()
+{
+    SqlWorker worker;
+    const QVariantHash worklogParamters {
+        { u"session_id"_s, mCurrentWorkSessionId },
+        { u"project_id"_s, mCurrentProjectId }
+    };
+    const QVariantHash worklogResults = worker.selectOne(u"SELECT id FROM worklog WHERE session_id=:session_id AND project_id=:project_id"_s, worklogParamters);
+    if (worklogResults.isEmpty()) {
+        const QVariantHash values {
+            { u"project_id"_s, mCurrentProjectId },
+            { u"session_id"_s, mCurrentWorkSessionId },
+            { u"start_time"_s, QDateTime::currentSecsSinceEpoch() },
+            { u"update_time"_s, QDateTime::currentSecsSinceEpoch() }
+        };
+        worker.insert(u"worklog"_s, values);
+    }
+}
+
+void TimeController::reloadSessionWorkTime()
+{
+    int workTime = 0;
+    if (mCurrentWorkSessionId >= 0) {
+        SqlWorker worker;
+        const QVariantHash paramters {
+            { u"session_id"_s, mCurrentWorkSessionId }
+        };
+        const QVariantHash worklogResults = worker.selectOne(u"SELECT sum(work_time) as work_time_sum FROM worklog WHERE session_id=:session_id"_s, paramters);
+        if (!worklogResults.isEmpty()) {
+            workTime = worklogResults.value(u"work_time_sum"_s).toInt();
+        }
+    }
+
+    mCurrentSessionWorkTime = workTime;
+    emit currentSessionWorkTimeChanged(mCurrentSessionWorkTime);
 }

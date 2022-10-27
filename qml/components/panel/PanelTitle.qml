@@ -1,6 +1,6 @@
 import QtQuick
 
-import ".."
+import Timro
 
 Item {
     property alias text: title.text
@@ -8,14 +8,14 @@ Item {
 
     property color frameColor: "#0F2C40"
 
-    height: parent.height * 0.1
-    width: title.paintedWidth + title.leftPadding + 5
+    height: Style.panel.titleHeight
+    width: title.paintedWidth + title.leftPadding + Style.panel.padding
 
-    AutoSizeText {
+    Text {
         id: title
         anchors.fill: parent
-        fontSizeMode: Text.VerticalFit
-        leftPadding: 10
+        leftPadding: Style.panel.padding * 2
+        font.pixelSize: Style.panel.titleFontSize
     }
 
     Rectangle {

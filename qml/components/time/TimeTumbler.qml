@@ -1,5 +1,7 @@
 import QtQuick
 
+import Timro
+
 Row {
     readonly property int selectedHour: hourListView.currentIndex
     readonly property int selectedMinute: minutesListView.currentIndex
@@ -22,9 +24,14 @@ Row {
         endValue: 99
     }
 
-    Item {
+    Text {
+        anchors.verticalCenter: parent.verticalCenter
+        verticalAlignment: Qt.AlignVCenter
+        horizontalAlignment: Qt.AlignHCenter
         width: parent.width - (hourListView.width * 2)
         height: 1
+        text: ":"
+        font.pixelSize: Style.timeDisplay.editTextFontSize
     }
 
     TimeNumberSpinner {

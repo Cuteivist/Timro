@@ -137,8 +137,6 @@ void TrayController::init()
     connect(&mTrayIcon, &QSystemTrayIcon::activated, this, &TrayController::onTrayActivated);
     connect(this, &TrayController::workTimeRunningChanged, this, &TrayController::onWorkTimeRunningChanged);
 
-    // TODO add connects to update tooltip
-
     initMenu();
 
     mTrayIcon.show();
@@ -148,21 +146,28 @@ void TrayController::initMenu()
 {
     mTrayMenu.reset(new QMenu(QApplication::applicationName()));
 
-    auto action = mTrayMenu->addAction(QApplication::windowIcon(), QApplication::applicationName());
-    connect(action, &QAction::triggered, this, &TrayController::showWindow);
+    auto appAction = mTrayMenu->addAction(QApplication::windowIcon(), QApplication::applicationName());
+    connect(appAction, &QAction::triggered, this, &TrayController::showWindow);
 
     mTrayMenu->addSeparator();
 
-    action = mTrayMenu->addAction(tr("Start"));
-    connect(action, &QAction::triggered, this, &TrayController::toggleStartPause);
-    connect(this, &TrayController::workTimeRunningChanged, this, [action](const bool running) {
-        action->setText(running ? tr("Pause") : tr("Start"));
+    auto startPauseAction = mTrayMenu->addAction(tr("Start"));
+    connect(startPauseAction, &QAction::triggered, this, &TrayController::toggleStartPause);
+    connect(this, &TrayController::workTimeRunningChanged, this, [startPauseAction](const bool running) {
+        startPauseAction->setText(running ? tr("Pause") : tr("Start"));
     });
 
-    action = mTrayMenu->addAction(tr("Start break"));
-    connect(action, &QAction::triggered, this, &TrayController::startBreak);
-    connect(this, &TrayController::workTimeRunningChanged, action, &QAction::setEnabled);
-    // TODO disable option if break is running
+    auto breakAction = mTrayMenu->addAction(tr("Start break"));
+    connect(breakAction, &QAction::triggered, this, &TrayController::startBreak);
+    connect(this, &TrayController::workTimeRunningChanged, breakAction, &QAction::setEnabled);
+    connect(this, &TrayController::breakStarted, this, [startPauseAction, breakAction] {
+        startPauseAction->setEnabled(false);
+        breakAction->setEnabled(false);
+    });
+    connect(this, &TrayController::breakFinished, this, [startPauseAction, breakAction] {
+        startPauseAction->setEnabled(true);
+        breakAction->setEnabled(true);
+    });
 
     mTrayMenu->addSeparator();
 
@@ -172,17 +177,15 @@ void TrayController::initMenu()
 
     mTrayMenu->addSeparator();
 
-    action = mTrayMenu->addAction(tr("Quit"));
-    connect(action, &QAction::triggered, this, &TrayController::quit);
+    auto quitAction = mTrayMenu->addAction(tr("Quit"));
+    connect(quitAction, &QAction::triggered, this, &TrayController::quit);
 
     mTrayIcon.setContextMenu(mTrayMenu.data());
 }
 
 void TrayController::updateToolTip()
 {
-    // TODO fill tooltip string
     static const QString tooltipTemplate = tr("");
-
     mTrayIcon.setToolTip(tooltipTemplate);
 }
 
