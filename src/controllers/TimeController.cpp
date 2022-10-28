@@ -121,6 +121,8 @@ void TimeController::setWorkTime(const int time)
 {
     mWorkTime = time;
     emit workTimeChanged(mWorkTime);
+    saveWorkTimeToWorklog();
+    reloadSessionWorkTime();
 }
 
 int TimeController::maxWorkTime() const
@@ -171,7 +173,8 @@ void TimeController::setCurrentSessionWorkTime(const int)
 
 void TimeController::onCurrentProjectChanged(const int projectId, const int maxWorkTime)
 {
-    if (workTimeRunning()) {
+    const bool timerRunning = workTimeRunning();
+    if (timerRunning) {
         saveWorkTimeToWorklog();
     }
     mCurrentProjectId = projectId;
@@ -180,10 +183,13 @@ void TimeController::onCurrentProjectChanged(const int projectId, const int maxW
         setMaxWorkTime(0);
         return;
     }
-    setWorkTime(projectWorkTime(projectId));
-    setMaxWorkTime(maxWorkTime);
-    if (workTimeRunning()) {
+    if (timerRunning) {
         insertWorkTimeToWorklogIfNotExists();
+    }
+    mWorkTime = projectWorkTime(projectId);
+    emit workTimeChanged(mWorkTime);
+    setMaxWorkTime(maxWorkTime);
+    if (timerRunning) {
         reloadSessionWorkTime();
     }
 }
