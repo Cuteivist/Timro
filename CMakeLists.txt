@@ -9,10 +9,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(buildType.cmake) # application details
+include(buildType.cmake) # build details
 include(appInfo.cmake) # application details
 
+# Platform setup
+if (WIN32)
+    set(APP_ICON_RESOURCE_WINDOWS Timro.rc)
+endif()
+
 project(Timro VERSION ${APP_VERSION} LANGUAGES CXX)
+
 
 find_package(Qt6 6.4 COMPONENTS REQUIRED Core Quick Sql Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Core ShaderTools Sql Widgets)
@@ -126,7 +132,11 @@ set_source_files_properties(${QML_SINGLETON_FILES} PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
 )
 
-qt_add_executable(Timro ${PROJECT_HEADERS} ${PROJECT_SOURCES})
+qt_add_executable(Timro
+    ${PROJECT_HEADERS}
+    ${PROJECT_SOURCES}
+    ${APP_ICON_RESOURCE_WINDOWS}
+)
 
 qt_add_qml_module(Timro
     URI Timro

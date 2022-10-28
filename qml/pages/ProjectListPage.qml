@@ -1,9 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-import "../panels"
-import "../components"
-import "../popups"
+import Timro
 
 BasePage {
     Column {
@@ -12,7 +10,7 @@ BasePage {
             top: parent.top
             right: parent.right
         }
-        spacing: 10
+        spacing: Style.panel.panelListSpacing
 
         ProjectListPanel {
             onShowTimePopup: {
