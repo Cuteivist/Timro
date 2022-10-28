@@ -14,9 +14,12 @@ class TimroCore : public QObject
     Q_OBJECT
 public:
     explicit TimroCore(QObject *parent = nullptr);
+    Q_DISABLE_COPY(TimroCore)
+
+    void init(QQmlApplicationEngine &engine);
 
 private: // members
-    QQmlApplicationEngine mEngine;
+    QQmlApplicationEngine *mEngine {};
 
     TimeController mTimeController;
     ProjectController mProjectController;
@@ -27,8 +30,6 @@ signals:
     void anotherAppStarted() const;
 
 private: // methods
-    void init();
-
     void connectManagers();
     void initManagers();
     void loadQml();

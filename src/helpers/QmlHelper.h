@@ -8,6 +8,7 @@ class QmlHelper : public QObject
     Q_OBJECT
 public:
     explicit QmlHelper(QObject *parent = nullptr);
+    Q_DISABLE_COPY(QmlHelper)
 
     Q_INVOKABLE QPoint cursorPos() const;
 

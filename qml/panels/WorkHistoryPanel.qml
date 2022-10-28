@@ -12,6 +12,7 @@ BasePanel {
     ColumnLayout {
         id: column
         anchors {
+            top: parent.top
             left: parent.left
             right: parent.right
         }
@@ -46,7 +47,7 @@ BasePanel {
 
             Layout.leftMargin: Style.panel.padding * 2
             Layout.fillWidth: true
-            height: contentHeight + bottomMargin
+            Layout.minimumHeight: contentHeight + bottomMargin
 
             model: projectController.workHistoryModel
             spacing: Style.listDelegate.listSpacing

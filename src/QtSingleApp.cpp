@@ -3,7 +3,11 @@
 #include <QLocalSocket>
 
 namespace {
+#ifdef QT_DEBUG
+const auto SERVER_NAME = QLatin1String("TIMRO_SINGLE_APP_DEBUG");
+#else
 const auto SERVER_NAME = QLatin1String("TIMRO_SINGLE_APP");
+#endif
 const auto PING_COMMAND = QLatin1String("TIMRO_PING");
 }
 

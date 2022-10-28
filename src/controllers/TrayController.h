@@ -11,6 +11,7 @@ class TrayController : public QObject
     Q_OBJECT
 public:
     explicit TrayController(QObject *parent = nullptr);
+    Q_DISABLE_COPY(TrayController)
 
     bool isTrayAvailable() const;
 

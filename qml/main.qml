@@ -9,7 +9,6 @@ ApplicationWindow {
     minimumWidth: 360
     minimumHeight: 480
     visible: true
-    title: "Timro"
 
     onVisibilityChanged: trayController.onVisibilityChanged(mainWindow.visibility)
 

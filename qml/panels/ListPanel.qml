@@ -5,7 +5,7 @@ import QtQuick.Controls
 import Timro
 
 BasePanel {
-    property alias editFields: grid.children
+    property alias editFields: editView.children
     property alias model: listViewObj.model
     property alias listView: listViewObj
 
@@ -16,6 +16,19 @@ BasePanel {
     property int selectedIndex: -1
     readonly property bool hasSelection: selectedIndex >= 0
 
+    readonly property int contentHeight: {
+        let value = topPanel.height
+         if (editViewVisible) {
+             value += editView.implicitHeight
+             value += editView.anchors.margins * 2
+         } else {
+             value += listViewObj.anchors.margins * 2
+             value += listViewObj.contentHeight
+         }
+         return value
+    }
+    property int maximumHeight: contentHeight
+
     signal resetFields()
     signal fillValuesFromSelected()
 
@@ -25,6 +38,8 @@ BasePanel {
     function backToListMode() {
         editView.hide()
     }
+
+    height: Math.min(contentHeight, maximumHeight)
 
     Row {
         id: topPanel
@@ -109,7 +124,7 @@ BasePanel {
         spacing: Style.listDelegate.listSpacing
     }
 
-    Item {
+    GridLayout {
         id: editView
 
         property bool editMode: false
@@ -131,14 +146,14 @@ BasePanel {
             editView.editMode = false
         }
 
-        anchors.fill: listViewObj
-        visible: false
-
-        GridLayout {
-            id: grid
-            anchors.fill: parent
-            columns: 2
-            columnSpacing: 10
+        anchors {
+            top: topPanel.bottom
+            left: parent.left
+            right: parent.right
+            margins: 10
         }
+        visible: false
+        columns: 2
+        columnSpacing: 10
     }
 }

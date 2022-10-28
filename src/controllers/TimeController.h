@@ -16,6 +16,7 @@ class TimeController : public QObject
 
 public:
     explicit TimeController(QObject *parent = nullptr);
+    Q_DISABLE_COPY(TimeController)
 
     void init();
 

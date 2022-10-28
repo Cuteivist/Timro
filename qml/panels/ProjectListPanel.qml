@@ -15,22 +15,21 @@ ListPanel {
         selectedMaxWorkTime = time
     }
 
-    model: projectController.model
-
     anchors {
         left: parent.left
         right: parent.right
     }
-    height: 250
+    model: projectController.model
+    maximumHeight: 250
 
     onResetFields: {
         selectedMaxWorkTime = 8 * 60 * 60 // Default value is 8h
-        nameInput.text = ""
+        nameInput.initialName = ""
     }
 
     onFillValuesFromSelected: {
         selectedMaxWorkTime = model.maxWorkTime(selectedId)
-        nameInput.text = model.name(selectedId)
+        nameInput.initialName = model.name(selectedId)
     }
 
     onConfirmAddClicked: {
@@ -75,6 +74,7 @@ ListPanel {
         id: delegate
 
         width: listView.width
+        height: delegateLayout.height + Style.listDelegate.margins * 2
         selected: selectedIndex === index
         onClicked: {
             if (selected) {
@@ -86,47 +86,65 @@ ListPanel {
             }
         }
 
-        Row {
+        RowLayout {
+            id: delegateLayout
             anchors {
                 left: parent.left
                 verticalCenter: parent.verticalCenter
-                margins: 5
+                margins: Style.listDelegate.margins
             }
-            spacing: 10
+            spacing: Style.listDelegate.spacing
 
             Image {
-                height: 24
-                width: height
+                Layout.preferredHeight: 24
+                Layout.preferredWidth: 24
                 source: "qrc:/Timro/resources/selected.png"
                 visible: delegate.selected
             }
 
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                text: name
-                font.pixelSize: Style.listDelegate.fontSize
-            }
-
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                text: qmlHelper.secondsToTimeString(maxWorkTime)
-                font.pixelSize: Style.listDelegate.fontSize
+            Column {
+                Layout.minimumHeight: height
+                Text {
+                    text: name
+                    elide: Text.ElideRight
+                    font.pixelSize: Style.listDelegate.fontSize
+                }
+                Text {
+                    text: qsTr("Max work time: %1").arg(qmlHelper.secondsToTimeString(maxWorkTime))
+                    font.pixelSize: Style.listDelegate.fontSize
+                }
             }
         }
     }
 
     editFields: [
-        // TODO implement header (adding or editing project ABC)
+        Text {
+            GridLayout.columnSpan: 2
+            font.pixelSize: Style.global.smallFontSize
+            text: editMode ? qsTr("Edit '%1'").arg(nameInput.initialName) : qsTr("Add new project")
+        },
+        Rectangle {
+            GridLayout.columnSpan: 2
+            Layout.fillWidth: true
+            Layout.preferredHeight: 1
+            color: "black"
+            opacity: 0.15
+        },
         Text {
             text: qsTr("Name:")
+            font.pixelSize: Style.global.defaultFontSize
         },
         TextField {
             id: nameInput
+            property string initialName: ""
             leftPadding: 5
             Layout.fillWidth: true
+            text: initialName
+            font.pixelSize: Style.global.defaultFontSize
         },
         Text {
             text: qsTr("Work time:")
+            font.pixelSize: Style.global.defaultFontSize
         },
         Rectangle {
             color: Style.editField.inputFieldColor
@@ -136,14 +154,12 @@ ListPanel {
                 anchors.fill: parent
                 anchors.leftMargin: 5
                 text: qmlHelper.secondsToTimeString(selectedMaxWorkTime)
+                font.pixelSize: Style.global.defaultFontSize
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: showTimePopup(selectedMaxWorkTime)
             }
-        },
-        Item {
-            Layout.fillHeight: true
         }
     ]
 }

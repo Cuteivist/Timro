@@ -10,11 +10,13 @@ using namespace Qt::Literals::StringLiterals;
 TimroCore::TimroCore(QObject *parent)
     : QObject{parent}
 {
-    init();
 }
 
-void TimroCore::init()
+void TimroCore::init(QQmlApplicationEngine &engine)
 {
+    Q_ASSERT_X(mEngine == nullptr, "TimroCore::init()", "Core initialisation should be called only once!");
+
+    mEngine = &engine;
     // Order of calls here is really important. Don't change it!
     initDatabase();
     connectManagers();
@@ -58,10 +60,14 @@ void TimroCore::connectManagers()
 
 void TimroCore::initManagers()
 {
-    mEngine.rootContext()->setContextProperty(u"projectController"_s, &mProjectController);
-    mEngine.rootContext()->setContextProperty(u"timeController"_s, &mTimeController);
-    mEngine.rootContext()->setContextProperty(u"trayController"_s, &mTrayController);
-    mEngine.rootContext()->setContextProperty(u"qmlHelper"_s, &mQmlHelper);
+    // QObjects
+    mEngine->rootContext()->setContextProperty(u"projectController"_s, &mProjectController);
+    mEngine->rootContext()->setContextProperty(u"timeController"_s, &mTimeController);
+    mEngine->rootContext()->setContextProperty(u"trayController"_s, &mTrayController);
+    mEngine->rootContext()->setContextProperty(u"qmlHelper"_s, &mQmlHelper);
+
+    // Constants
+    mEngine->rootContext()->setContextProperty(u"isDebug"_s, DEBUG_BUILD);
 
     // Time controller need to be initialized first
     mTimeController.init();
@@ -74,7 +80,7 @@ void TimroCore::initManagers()
 void TimroCore::loadQml()
 {
     const QUrl url(u"qrc:/Timro/qml/main.qml"_s);
-    mEngine.load(url);
+    mEngine->load(url);
 }
 
 void TimroCore::initDatabase()

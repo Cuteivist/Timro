@@ -14,6 +14,7 @@ class ProjectController : public QObject
     Q_PROPERTY(int currentProjectId READ currentProjectId WRITE setCurrentProjectId NOTIFY currentProjectIdChanged)
 public:
     explicit ProjectController(QObject *parent = nullptr);
+    Q_DISABLE_COPY(ProjectController)
 
     void init();
 

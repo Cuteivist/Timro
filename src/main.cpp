@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QFileInfo>
+#include <QQmlApplicationEngine>
 #include <iostream>
 
 #include "TimroCore.h"
@@ -85,8 +86,10 @@ int main(int argc, char *argv[])
     }
 
     TimroCore core;
-
     core.connect(&singleApp, &QtSingleApp::anotherAppStarted, &core, &TimroCore::anotherAppStarted);
+
+    QQmlApplicationEngine engine;
+    core.init(engine);
 
     return app.exec();
 }

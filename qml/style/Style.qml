@@ -35,6 +35,7 @@ QtObject {
         readonly property int fontSize: 18
         readonly property int listSpacing: 5
         readonly property int spacing: 5
+        readonly property int margins: 5
     }
 
     readonly property var panel: QtObject {
