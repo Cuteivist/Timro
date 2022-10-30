@@ -4,7 +4,7 @@
 #include "controllers/ProjectController.h"
 #include "controllers/TimeController.h"
 #include "controllers/TrayController.h"
-#include "helpers/QmlHelper.h"
+#include "helpers/Utils.h"
 
 #include <QObject>
 #include <QQmlApplicationEngine>
@@ -24,7 +24,7 @@ private: // members
     TimeController mTimeController;
     ProjectController mProjectController;
     TrayController mTrayController;
-    QmlHelper mQmlHelper;
+    Utils mUtils;
 
 signals:
     void anotherAppStarted() const;

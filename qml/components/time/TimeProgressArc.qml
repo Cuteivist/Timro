@@ -19,7 +19,7 @@ Shape {
         readonly property point finishLineOuterPoint: finishLinePoint(priv.barLineHeight * 0.5)
 
         function finishLinePoint(offset) {
-            return qmlHelper.rotatePoint(priv.center, priv.currentAngle, Qt.point(priv.center.x, priv.center.y + arcShape.radius + offset))
+            return utils.rotatePoint(priv.center, priv.currentAngle, Qt.point(priv.center.x, priv.center.y + arcShape.radius + offset))
         }
     }
 

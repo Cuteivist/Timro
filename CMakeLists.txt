@@ -42,7 +42,7 @@ set(PROJECT_HEADERS
     src/models/ProjectModel.h
     src/models/ProjectWorkHistoryModel.h
     src/QtSingleApp.h
-    src/helpers/QmlHelper.h
+    src/helpers/Utils.h
 )
 
 set(PROJECT_SOURCES
@@ -61,7 +61,7 @@ set(PROJECT_SOURCES
     src/models/ProjectModel.cpp
     src/models/ProjectWorkHistoryModel.cpp
     src/QtSingleApp.cpp
-    src/helpers/QmlHelper.cpp
+    src/helpers/Utils.cpp
 )
 
 set(QML_SINGLETON_FILES

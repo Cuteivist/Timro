@@ -12,7 +12,7 @@ ImageButton {
     layer.effect: ShaderEffect {
         id: shader
         property int rotationAngle: 0.0
-        property real rotation: qmlHelper.degreeToRadians(rotationAngle)
+        property real rotation: utils.degreeToRadians(rotationAngle)
 
         PropertyAnimation {
             id: rotationAnimation

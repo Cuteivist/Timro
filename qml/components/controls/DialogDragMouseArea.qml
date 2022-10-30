@@ -13,7 +13,7 @@ MouseArea {
 
         // remember starting position
         startDialogPos = Qt.point(window.x, window.y);
-        startCursorPos = qmlHelper.cursorPos();
+        startCursorPos = utils.cursorPos();
     }
 
     onPositionChanged: {
@@ -21,7 +21,7 @@ MouseArea {
             return
         }
         // count difference
-        const newCursorPos = qmlHelper.cursorPos();
+        const newCursorPos = utils.cursorPos();
         const difference = Qt.point(newCursorPos.x - startCursorPos.x,
                                     newCursorPos.y - startCursorPos.y);
         // update position

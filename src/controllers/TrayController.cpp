@@ -1,5 +1,7 @@
 #include "TrayController.h"
 
+#include "helpers/Utils.h"
+
 #include <QActionGroup>
 #include <QApplication>
 #include <QPainter>
@@ -51,21 +53,26 @@ void TrayController::onTrayActivated(QSystemTrayIcon::ActivationReason activatio
 
 void TrayController::onWorkTimeChanged(const int workTime)
 {
-    if (!mShowingTimeInTrayIcon) {
+    if (!validForRedraw(mTooltipInfo.workTime, workTime)) {
         return;
     }
+    mTooltipInfo.workTime = workTime;
+    updateTrayIcon();
+    updateToolTip();
+}
 
-    QPixmap pixmap(30,30);
-    pixmap.fill(QColor(144, 238, 144));
-
-    QPainter painter(&pixmap);
-
-    const int totalMinutes = qFloor(workTime / 60);
-    const QString minutes = QString::number(totalMinutes % 60);
-    const QString hours = QString::number(qFloor(totalMinutes / 60));
-
-    painter.drawText(pixmap.rect(), Qt::AlignCenter, u"%1:%2"_s.arg(hours, minutes));
-    mTrayIcon.setIcon(pixmap);
+void TrayController::onSessionWorkTimeChanged(const int workTime)
+{
+    if (workTime <= 0) {
+        mTooltipInfo.sessionWorkTime = -1;
+        updateToolTip();
+        return;
+    }
+    if (!validForRedraw(mTooltipInfo.sessionWorkTime, workTime)) {
+        return;
+    }
+    mTooltipInfo.sessionWorkTime = workTime;
+    updateToolTip();
 }
 
 void TrayController::onCurrentProjectChanged(const int projectId)
@@ -73,6 +80,8 @@ void TrayController::onCurrentProjectChanged(const int projectId)
     for (auto action : mProjectGroup->actions()) {
         if (action->property(PROJECT_ID_PROPERTY.data()).toInt() == projectId) {
             action->setChecked(true);
+            mTooltipInfo.projectName = action->text();
+            updateToolTip();
         } else {
             action->setChecked(false);
         }
@@ -101,7 +110,13 @@ void TrayController::onProjectRemoved(const int projectId)
             mProjectGroup->removeAction(action);
             mProjectMenu->removeAction(action);
             action->deleteLater();
-            mProjectMenu->setEnabled(!mProjectGroup->actions().isEmpty());
+            const bool projectsAvailable = !mProjectGroup->actions().isEmpty();
+            mProjectMenu->setEnabled(projectsAvailable);
+            if (!projectsAvailable) {
+                mTooltipInfo.projectName.clear();
+                mTooltipInfo.workTime = 0;
+                updateToolTip();
+            }
             return;
         }
     }
@@ -112,6 +127,11 @@ void TrayController::onProjectRenamed(const int projectId, const QString &name)
     for (auto action : mProjectGroup->actions()) {
         if (action->property(PROJECT_ID_PROPERTY.data()).toInt() == projectId) {
             action->setText(name);
+            if (action->isChecked()) {
+                // Rename current project
+                mTooltipInfo.projectName = action->text();
+                updateToolTip();
+            }
             return;
         }
     }
@@ -120,6 +140,7 @@ void TrayController::onProjectRenamed(const int projectId, const QString &name)
 void TrayController::onWorkTimeRunningChanged(const bool running)
 {
     mShowingTimeInTrayIcon = running;
+    updateTrayIcon(true);
     if (!running) {
         mTrayIcon.setIcon(QApplication::windowIcon());
     }
@@ -138,6 +159,16 @@ void TrayController::init()
     connect(this, &TrayController::workTimeRunningChanged, this, &TrayController::onWorkTimeRunningChanged);
 
     initMenu();
+
+    connect(this, &TrayController::breakStarted, this, [this] {
+        mTooltipInfo.lastBreakEndTime = QDateTime();
+        updateToolTip();
+    });
+    connect(this, &TrayController::breakFinished, this, [this] {
+        mTooltipInfo.lastBreakEndTime = QDateTime::currentDateTimeUtc();
+        updateToolTip();
+    });
+
 
     mTrayIcon.show();
 }
@@ -185,8 +216,54 @@ void TrayController::initMenu()
 
 void TrayController::updateToolTip()
 {
-    static const QString tooltipTemplate = tr("");
-    mTrayIcon.setToolTip(tooltipTemplate);
+    QStringList tooltipInfo;
+    if (!mTooltipInfo.projectName.isEmpty()) {
+        tooltipInfo << tr("CURRENT PROJECT") << mTooltipInfo.projectName;
+    }
+    tooltipInfo << tr("WORK TIME") << Utils::secondsToTimeString(mTooltipInfo.workTime, false);
+    if (mTooltipInfo.sessionWorkTime >= 0) {
+        tooltipInfo << tr("SESSION WORK TIME") << Utils::secondsToTimeString(mTooltipInfo.sessionWorkTime, false);
+    }
+    if (mTooltipInfo.lastBreakEndTime.isValid()) {
+        tooltipInfo << tr("TIME SINCE LAST BREAK");
+        const int secondsSinceLastBreak = mTooltipInfo.lastBreakEndTime.msecsTo(QDateTime::currentDateTimeUtc()) / 1000;
+        tooltipInfo << Utils::secondsToTimeString(secondsSinceLastBreak, false);
+    }
+    mTrayIcon.setToolTip(tooltipInfo.join('\n'));
+}
+
+void TrayController::updateTrayIcon(const bool force)
+{
+    if (!mShowingTimeInTrayIcon && !force) {
+        return;
+    }
+
+    QPixmap pixmap(30,30);
+    pixmap.fill(QColor(144, 238, 144));
+
+    QPainter painter(&pixmap);
+
+    const int totalMinutes = qFloor(mTooltipInfo.workTime / 60);
+    const QString minutes = QString::number(totalMinutes % 60);
+    const QString hours = QString::number(qFloor(totalMinutes / 60));
+
+    painter.drawText(pixmap.rect(), Qt::AlignCenter, u"%1:%2"_s.arg(hours, minutes));
+    mTrayIcon.setIcon(pixmap);
+}
+
+bool TrayController::validForRedraw(const int lastDrawTimeSecs, const int currentTimeSecs) const
+{
+    if (lastDrawTimeSecs <= 0) {
+        return true;
+    }
+    const int timeDiff = currentTimeSecs - lastDrawTimeSecs;
+    static const int refreshTimeInSeconds = 60;
+    if (timeDiff >= refreshTimeInSeconds || timeDiff < 0) {
+        return true;
+    }
+    // If minute didn't change since last redraw, skip update
+    // e.g. Last paint was on 00:22:33 and current time is 00:22:55
+    return Utils::getMinutes(currentTimeSecs) != Utils::getMinutes(lastDrawTimeSecs);
 }
 
 void TrayController::quit()

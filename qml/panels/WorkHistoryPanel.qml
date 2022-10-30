@@ -18,7 +18,7 @@ BasePanel {
         }
 
         Text {
-            text: qsTr("Session work time: %1").arg(qmlHelper.secondsToTimeString(timeController.currentSessionWorkTime))
+            text: qsTr("Session work time: %1").arg(utils.secondsToTimeString(timeController.currentSessionWorkTime))
             font.pixelSize: Style.global.defaultFontSize
 
             Layout.leftMargin: Style.panel.padding * 2
@@ -78,7 +78,7 @@ BasePanel {
                             projectWorkTime = workTime
                         }
                         const percent = Math.round((projectWorkTime / maxWorkTime) * 100)
-                        const valueStr = String("%1  [%2%]").arg(qmlHelper.secondsToTimeString(projectWorkTime)).arg(percent)
+                        const valueStr = String("%1  [%2%]").arg(utils.secondsToTimeString(projectWorkTime)).arg(percent)
                         return qsTr("Work time: %1").arg(valueStr)
                     }
                     font.pixelSize: delegate.fontSize

@@ -9,6 +9,6 @@ Text {
 
     verticalAlignment: Text.AlignVCenter
     horizontalAlignment: Text.AlignHCenter
-    text: qmlHelper.secondsToTimeString(value)
+    text: utils.secondsToTimeString(value)
     font.pixelSize: Style.timeDisplay.textFontSize
 }

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSystemTrayIcon>
 #include <QWindow>
+#include <QDateTime>
 #include <QMenu>
 
 class TrayController : public QObject
@@ -21,6 +22,7 @@ public slots:
     void onVisibilityChanged(QWindow::Visibility visibility);
     void onTrayActivated(QSystemTrayIcon::ActivationReason activationReason);
     void onWorkTimeChanged(const int workTime);
+    void onSessionWorkTimeChanged(const int workTime);
 
     // Project group slots
     void onCurrentProjectChanged(const int projectId);
@@ -30,6 +32,7 @@ public slots:
 
 private slots:
     void onWorkTimeRunningChanged(const bool running);
+    void updateToolTip();
 
 signals:
     // outgoing
@@ -47,6 +50,12 @@ signals:
     void breakFinished() const;
 
 private:
+    struct TooltipInfo {
+        QString projectName;
+        int workTime {0}, sessionWorkTime {-1};
+        QDateTime lastBreakEndTime;
+    };
+    TooltipInfo mTooltipInfo;
     bool mIsTrayAvailable;
     bool mShowingTimeInTrayIcon = false;
     QSystemTrayIcon mTrayIcon;
@@ -57,8 +66,9 @@ private:
     void init();
     void initMenu();
 
-    void updateToolTip();
-    void updateTrayIcon();
+    void updateTrayIcon(const bool force = false);
+
+    bool validForRedraw(const int lastDrawTimeSecs, const int currentTimeSecs) const;
 
     void quit();
 };

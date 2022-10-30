@@ -110,7 +110,7 @@ ListPanel {
                     font.pixelSize: Style.listDelegate.fontSize
                 }
                 Text {
-                    text: qsTr("Max work time: %1").arg(qmlHelper.secondsToTimeString(maxWorkTime))
+                    text: qsTr("Max work time: %1").arg(utils.secondsToTimeString(maxWorkTime))
                     font.pixelSize: Style.listDelegate.fontSize
                 }
             }
@@ -153,7 +153,7 @@ ListPanel {
             Text {
                 anchors.fill: parent
                 anchors.leftMargin: 5
-                text: qmlHelper.secondsToTimeString(selectedMaxWorkTime)
+                text: utils.secondsToTimeString(selectedMaxWorkTime)
                 font.pixelSize: Style.global.defaultFontSize
             }
             MouseArea {

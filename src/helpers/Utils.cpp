@@ -1,22 +1,21 @@
-#include "QmlHelper.h"
+#include "Utils.h"
 
 #include <QCursor>
 #include <QDebug>
 
 using namespace Qt::Literals::StringLiterals;
 
-QmlHelper::QmlHelper(QObject *parent)
+Utils::Utils(QObject *parent)
     : QObject{parent}
 {
-
 }
 
-QPoint QmlHelper::cursorPos() const
+QPoint Utils::cursorPos()
 {
     return QCursor::pos();
 }
 
-QPointF QmlHelper::rotatePoint(const QPointF &center, const double angle, const QPointF &point) const
+QPointF Utils::rotatePoint(const QPointF &center, const double angle, const QPointF &point)
 {
     const float radians = qDegreesToRadians(angle);
     const float sin = qSin(radians);
@@ -34,36 +33,39 @@ QPointF QmlHelper::rotatePoint(const QPointF &center, const double angle, const 
     return result;
 }
 
-float QmlHelper::degreeToRadians(const float degree) const
+float Utils::degreeToRadians(const float degree)
 {
     return qDegreesToRadians(degree);
 }
 
-int QmlHelper::getMinutes(const int seconds) const
+int Utils::getMinutes(const int seconds)
 {
     return qFloor(static_cast<float>(seconds) / 60.f) % 60;
 }
 
-int QmlHelper::getHours(const int seconds) const
+int Utils::getHours(const int seconds)
 {
     return qFloor(qFloor(static_cast<float>(seconds) / 60.f) / 60);
 }
 
-QString QmlHelper::secondsToTimeString(const int seconds) const
+QString Utils::secondsToTimeString(const int seconds, const bool showSeconds)
 {
     const int fullMinutes = qFloor(seconds / 60);
-    const int secs = seconds % 60;
     const int mins = fullMinutes % 60;
     const int hours = qFloor(fullMinutes / 60);
 
-    const QString secondsStr = timeToStringWithLeadingZero(secs);
     const QString minutesStr = timeToStringWithLeadingZero(mins);
     const QString hoursStr = timeToStringWithLeadingZero(hours);
 
-    return u"%1:%2:%3"_s.arg(hoursStr, minutesStr, secondsStr);
+    if (showSeconds) {
+        const int secs = seconds % 60;
+        const QString secondsStr = timeToStringWithLeadingZero(secs);
+        return u"%1:%2:%3"_s.arg(hoursStr, minutesStr, secondsStr);
+    }
+    return u"%1:%2"_s.arg(hoursStr, minutesStr);
 }
 
-QString QmlHelper::timeToStringWithLeadingZero(const int elapsed) const
+QString Utils::timeToStringWithLeadingZero(const int elapsed)
 {
     return elapsed > 9 ? QString::number(elapsed) : u"0%1"_s.arg(elapsed);
 }

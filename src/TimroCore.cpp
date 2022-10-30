@@ -45,6 +45,7 @@ void TimroCore::connectManagers()
     connect(&mTimeController, &TimeController::breakFinished, &mTrayController, &TrayController::breakFinished);
     connect(&mTimeController, &TimeController::workTimeRunningChanged, mProjectController.workHistoryModel(), &ProjectWorkHistoryModel::onWorkTimeRunningChanged);
     connect(&mTimeController, &TimeController::sessionFinished, mProjectController.workHistoryModel(), &ProjectWorkHistoryModel::refresh);
+    connect(&mTimeController, &TimeController::currentSessionWorkTimeChanged, &mTrayController, &TrayController::onSessionWorkTimeChanged);
 
     // Tray
     connect(&mTrayController, &TrayController::toggleStartPause, this, [this]() {
@@ -65,7 +66,7 @@ void TimroCore::initManagers()
     mEngine->rootContext()->setContextProperty(u"projectController"_s, &mProjectController);
     mEngine->rootContext()->setContextProperty(u"timeController"_s, &mTimeController);
     mEngine->rootContext()->setContextProperty(u"trayController"_s, &mTrayController);
-    mEngine->rootContext()->setContextProperty(u"qmlHelper"_s, &mQmlHelper);
+    mEngine->rootContext()->setContextProperty(u"utils"_s, &mUtils);
     mEngine->rootContext()->setContextProperty(u"app"_s, QApplication::instance());
 
     // Constants

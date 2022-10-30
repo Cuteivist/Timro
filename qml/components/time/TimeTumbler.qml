@@ -9,8 +9,8 @@ Row {
     readonly property int selectedValueInSeconds: ((selectedHour * 60) + selectedMinute) * 60
 
     function reset(elapsedSeconds) {
-        minutesListView.positionViewAtIndex(qmlHelper.getMinutes(elapsedSeconds), ListView.Center)
-        hourListView.positionViewAtIndex(qmlHelper.getHours(elapsedSeconds), ListView.Center)
+        minutesListView.positionViewAtIndex(utils.getMinutes(elapsedSeconds), ListView.Center)
+        hourListView.positionViewAtIndex(utils.getHours(elapsedSeconds), ListView.Center)
     }
 
     TimeNumberSpinner {
