@@ -78,9 +78,11 @@ set(QML_FILES
     qml/panels/ProjectListPanel.qml
     qml/panels/TaskListPanel.qml
     qml/panels/ListPanel.qml
+    qml/pages/PageView.qml
     qml/pages/BasePage.qml
     qml/pages/HomePage.qml
     qml/pages/ProjectListPage.qml
+    qml/pages/AboutPage.qml
     qml/popups/BaseConfirmPopup.qml
     qml/popups/TimeTumblerPopup.qml
     qml/popups/PopupContainer.qml
@@ -100,9 +102,11 @@ set(QML_FILES
     qml/components/controls/MenuButton.qml
     qml/components/controls/DialogDragMouseArea.qml
     qml/components/controls/ProjectSelectionComboBox.qml
+    qml/components/controls/CollapsableSection.qml
     qml/components/delegates/PanelListDelegate.qml
     qml/components/effects/RotatingShadowEffect.qml
     qml/components/effects/GradientEffect.qml
+    qml/models/IconAttributionsModel.qml
     qml/utils/ModelUtils.js
     ${QML_SINGLETON_FILES}
 )
@@ -124,8 +128,10 @@ set(RESOURCE_FILES
     resources/menu/settings.png
     resources/menu/task.png
     resources/menu/home.png
+    resources/menu/about.png
     resources/selected.png
     resources/app_icon.png
+    resources/qt_logo.png
 )
 
 set_source_files_properties(${QML_SINGLETON_FILES} PROPERTIES
@@ -159,4 +165,5 @@ set_target_properties(Timro PROPERTIES
     MACOSX_BUNDLE ON
 )
 
+target_compile_definitions(Timro PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(Timro PRIVATE Qt6::Sql Qt6::Quick Qt6::Core Qt6::Widgets)

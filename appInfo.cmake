@@ -1,9 +1,5 @@
 # Application information
-if (DEBUG_BUILD)
-    set(APP_NAME "Timro - debug")
-else()
-    set(APP_NAME "Timro")
-endif()
+set(APP_NAME "Timro")
 
 set(APP_DESCRIPTION "A work time management application for freelancers")
 set(APP_VERSION 0.1.0)

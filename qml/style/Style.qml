@@ -26,6 +26,18 @@ QtObject {
         readonly property color inputFieldColor: "#A0FFFFFF"
     }
 
+    readonly property var collapsableSection: QtObject {
+        readonly property color backgroundColor: "#80FFFFFF"
+        readonly property color delegateBackgroundColor: "#80B1BDC5"
+        readonly property int radius: 4
+        readonly property int spacing: 5
+        readonly property int padding: 5
+        readonly property string icon: "qrc:/Timro/resources/button/down.png"
+        readonly property int iconSize: 24
+        readonly property int titleFontSize: global.defaultFontSize
+        readonly property int contentsFontSize: global.smallFontSize
+    }
+
     readonly property var listDelegate: QtObject {
         readonly property int height: 40
         readonly property int radius: 4

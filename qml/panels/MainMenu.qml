@@ -12,6 +12,7 @@ Rectangle {
 
     signal projectListMenuClicked()
     signal homeMenuClicked()
+    signal aboutMenuClicked()
 
     Column {
         id: buttonColumn
@@ -44,7 +45,6 @@ Rectangle {
         }
 
         MenuButton {
-            id: projectListButton
             source: "qrc:/Timro/resources/menu/task.png"
             iconSize: mainMenu.iconSize
             active: buttonColumn.currentActiveButton === this
@@ -55,11 +55,34 @@ Rectangle {
         }
     }
 
-    MenuButton {
+    Column {
+        id: bottomButtonColumn
+
         anchors {
+            left: parent.left
+            right: parent.right
             bottom: parent.bottom
         }
-        lineAtTheBottom: false
-        source: "qrc:/Timro/resources/menu/settings.png"
+
+        MenuButton {
+            source: "qrc:/Timro/resources/menu/about.png"
+            iconSize: mainMenu.iconSize
+            active: buttonColumn.currentActiveButton === this
+            lineAtTheBottom: false
+            onClicked: {
+                buttonColumn.currentActiveButton = this
+                aboutMenuClicked()
+            }
+        }
+
+        MenuButton {
+            source: "qrc:/Timro/resources/menu/settings.png"
+            iconSize: mainMenu.iconSize
+            active: buttonColumn.currentActiveButton === this
+            lineAtTheBottom: false
+            onClicked: {
+                // TODO show settings
+            }
+        }
     }
 }

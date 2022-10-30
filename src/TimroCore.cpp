@@ -1,6 +1,7 @@
 #include "TimroCore.h"
 
 #include <QQmlContext>
+#include <QApplication>
 
 #include "database/DatabaseMigrationWorker.h"
 #include "database/DatabaseProvider.h"
@@ -65,6 +66,7 @@ void TimroCore::initManagers()
     mEngine->rootContext()->setContextProperty(u"timeController"_s, &mTimeController);
     mEngine->rootContext()->setContextProperty(u"trayController"_s, &mTrayController);
     mEngine->rootContext()->setContextProperty(u"qmlHelper"_s, &mQmlHelper);
+    mEngine->rootContext()->setContextProperty(u"app"_s, QApplication::instance());
 
     // Constants
     mEngine->rootContext()->setContextProperty(u"isDebug"_s, DEBUG_BUILD);
